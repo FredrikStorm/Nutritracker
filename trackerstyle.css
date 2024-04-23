@@ -1,0 +1,90 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito', sans-serif;
+}
+
+header {
+    height: 150px;
+    display: flex;
+    position: relative;
+    align-items: center;
+    background-color: #DEF6D8;
+}
+
+.logo {
+    padding: 30px 30px 30px 50px;
+}
+
+.logo img {
+    height: 75px;
+    width: 210px;
+}
+
+.knapper {
+    /*padding-left: 70px;*/
+    display: flex;
+    gap: 80px;
+}
+
+
+.knapper a {
+    text-decoration: none;
+    color: #757575;
+    padding-left: 50px;
+}
+
+#dash{
+    padding-left: 70px;
+}
+
+.meal-tracker-table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+.meal-tracker-table thead th {
+    background-color: #fff; /* Endret til hvit bakgrunnsfarge */
+    padding: 10px;
+    text-align: left;
+}
+
+.meal-tracker-table tbody {
+    background-color: #DEF6D8; /* Grønn bakgrunn kun på tbody */
+}
+
+.meal-tracker-table tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+
+.nutrient-info {
+    background-color: #C6EBC9;
+    display: inline-block;
+    padding: 2px 5px;
+    margin-right: 5px;
+    border-radius: 5px;
+}
+
+#dash-container {
+    display: flex;
+    justify-content: space-between; /* Dette vil plassere barna på hver sin side */
+    align-items: center;
+    width: 90%; /* Sørger for at containeren tar full bredde */
+    padding: 0 20px; /* Legger til litt padding på sidene for å unngå at innholdet kleber til kanten */
+}
+
+.knapp {
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    background-color: #91c789;
+    font-size: 20px;
+    color: white;
+    border: none; /* Fjerner border */
+    cursor: pointer; /* Endrer musepeker til peker */
+}
+
+

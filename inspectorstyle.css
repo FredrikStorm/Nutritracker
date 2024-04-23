@@ -1,0 +1,100 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito', sans-serif;
+}
+
+header {
+    height: 150px;
+    display: flex;
+    position: relative;
+    align-items: center;
+    background-color: #DEF6D8;
+}
+
+.logo {
+    padding: 30px 30px 30px 50px;
+}
+
+.logo img {
+    height: 75px;
+    width: 210px;
+}
+
+.knapper {
+    display: flex;
+    gap: 80px;
+}
+
+.knapper a {
+    text-decoration: none;
+    color: #757575;
+    padding-left: 50px;
+}
+
+#dash {
+    padding-left: 70px;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.search-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+}
+
+
+
+.inputmat {
+    border: 1px solid #DEF6D8;
+    padding: 10px;
+    width: 60%; /* Juster bredde etter behov */
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+}
+
+.inputmat ul, .infomat ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.inputmat li {
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+    background-color: #e6f4ea; /* Lys grønnfarge for inputmat */
+}
+
+.inputmat li:hover {
+    background-color: #d4e8d6;
+}
+
+.infomat {
+    border: 1px solid #DEF6D8;
+    padding: 10px;
+    width: 60%; /* Samme bredde som inputmat for konsistens */
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+    margin-top: 20px; /* For å skille fra søkeområdet */
+}
+
+.infomat li {
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+    background-color: #f0f0f0; /* Lys gråfarge for infomat */
+}
+
+.infomat li:hover {
+    background-color: #e0e0e0;
+}
