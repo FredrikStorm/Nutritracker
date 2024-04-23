@@ -1,0 +1,45 @@
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Opret Profil</title>
+    <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+    <div class="logo">
+        <a href="login.html"> 
+            <img src="logo.jpg" alt="Billede af logo">
+        </a>
+    </div>
+    <div class="signup-container">
+        <h2>Opret Profil</h2>
+        <form>
+            <div class="input-group">
+                <label for="name">Navn:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="input-group">
+                <label for="email">Emailadresse:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="input-group">
+                <label for="weight">Vægt (kg):</label>
+                <input type="number" id="weight" name="weight" required>
+            </div>
+            <div class="input-group">
+                <label for="age">Alder:</label>
+                <input type="number" id="age" name="age" required>
+            </div>
+            <div class="input-group">
+                <label for="gender">Køn:</label>
+                <select id="gender" name="gender" required>
+                    <option value="">Vælg...</option>
+                    <option value="male">Mand</option>
+                    <option value="female">Kvinde</option>
+                    <option value="other">Andet</option>
+                </select>
+            </div>
+            <button type="submit">Opret Profil</button>
+        </form>
+    </div>
+</body>
+</html>
