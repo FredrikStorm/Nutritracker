@@ -1,4 +1,4 @@
-
+/*
 //popup vindu
 document.addEventListener('DOMContentLoaded', () => {
     // Referanse til '+'-knappen
@@ -262,4 +262,54 @@ function saveMealToLocalStorage(mealName, kcalper100, proteinper100, fettPer100,
     let meals = JSON.parse(localStorage.getItem('meals')) || [];
     meals.push({ name: mealName, caloriesPer100: kcalper100, proteinPer100: proteinper100, fatPer100: fettPer100, waterPer100: vannPer100, ingredients: numberOfIngredients });
     localStorage.setItem('meals', JSON.stringify(meals));
+}
+
+*/
+
+
+
+// meal-creator.js
+document.addEventListener('DOMContentLoaded', () => {
+    const addButton = document.querySelector('.knapp');
+    addButton.addEventListener('click', openIngredientPopup);
+});
+
+function openIngredientPopup() {
+    const popup = document.createElement('div');
+    popup.className = 'popup';
+    popup.innerHTML = `
+    <div class="search-container">
+        <input type="text" id="ingredientSearchField" placeholder="Search for ingredients">
+        <button id="ingredientSearchButton">Search</button>
+    </div>
+    <div class="list-container">
+        <div class="søkeliste"><p>søkeliste:</p></div>
+    </div>
+    `;
+    document.body.appendChild(popup);
+    document.getElementById('ingredientSearchButton').addEventListener('click', searchIngredient);
+}
+
+function searchIngredient() {
+    const searchString = document.getElementById('ingredientSearchField').value;
+    console.log('Searching for:', searchString);
+    const apiUrl = `http://localhost:3000/api/foodbank/food?search=${encodeURIComponent(searchString)}`;
+
+    fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => updateFoodList(data))
+    .catch(error => console.error('Problem with fetch operation:', error));
+}
+
+function updateFoodList(data) {
+    const container = document.querySelector('.søkeliste');
+    container.innerHTML = '<p>søkeliste:</p>';
+    const list = document.createElement('ul');
+    data.forEach(item => {
+        const listItem = document.createElement('li');
+        listItem.textContent = item.FoodName;
+        listItem.style.cursor = 'pointer';
+        list.appendChild(listItem);
+    });
+    container.appendChild(list);
 }
