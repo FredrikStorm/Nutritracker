@@ -9,7 +9,10 @@ const config = {
     encrypt: true,
     enableArithAbort: true,
     trustServerCertificate: false // For produksjonsmiljøer bør dette være false
-  }
+  },
+  connectionTimeout: 30000,      // 30 sekunder
+  requestTimeout: 30000          // 30 sekunder
+
 };
 
 module.exports = config;

@@ -1,12 +1,7 @@
 // Importer nødvendige moduler
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 3000;
-
-const cors = require('cors');
-app.use(cors());
-
-const {getIngredients} = require('./database');
+const port = process.env.PORT || 3100;
 
 // Importer SQL og databasekonfigurasjon
 const sql = require('mssql');
@@ -26,32 +21,9 @@ async function connectToDatabase() {
     }
 }
 
-
-
-app.get('/api/foodbank/food', async (req, res) => {
-    const searchString = req.query.search || '';
-    try {
-        const ingredients = await getIngredients(searchString);
-        res.json(ingredients);
-    } catch (error) {
-        console.error('Error fetching ingredients:', error);
-        res.status(500).send('Error fetching ingredients');
-    }
-});
-
-
-
 // Koble til databasen ved oppstart
 connectToDatabase();
 
-
-// Start serveren og lytt på angitt port
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
-
-
-/*
 app.get('/', async (req, res) => {
     try {
         // Oppdatert for å hente alle data fra 'Address' tabellen i 'User' skjemaet
@@ -66,4 +38,7 @@ app.get('/', async (req, res) => {
     }
 });
 
-*/
+// Start serveren og lytt på angitt port
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});
