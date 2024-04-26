@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metabolism Calculator</title>
+    <link rel="stylesheet" href="activitytracker.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="logo.jpg" alt="bilde av logo">
+        </div>
+        <div class="knapper">
+            <a href="DailyNutri.html"><h3>Daily Nutri</h3></a>
+            <a href="meal_creator.html"><h3>Meal Creator</h3></a>
+            <a href="meal_tracker.html"><h3>Meal Tracker</h3></a>
+            <a href="activitytracker.html"><h3>Activity Tracker</h3></a>
+            <a href="profil.html"><h3>Profil</h3></a>
+        </div>
+    </header>
+    <div class="container">
+        <h1>Stofskifte beregner</h1>
+        <form id="stofskifteForm">
+            <div class="input-group">
+                <label for="age">Alder (år):</label>
+                <input type="number" id="age" name="age" required>
+            </div>
+            <div class="input-group">
+                <label for="weight">Vægt (kg):</label>
+                <input type="number" id="weight" name="weight" required>
+            </div>
+            <div class="input-group">
+                <label>Gender:</label>
+                <label for="male">Man</label>
+                <input type="radio" id="male" name="gender" value="male" required>
+                <label for="female">Kvinde</label>
+                <input type="radio" id="female" name="gender" value="female">
+            </div>
+            <button type="button" onclick="calculateStofskifte()">Beregn</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    
+<!--Her er aktivitets tracker-->
+    <div class="container">
+        <h1>Aktivitetsregistrering</h1>
+        <form id="activityForm">
+            <div class="form-group">
+                <label for="everydayActivities">Almindelige hverdagsaktiviteter:</label>
+                <div class="input-group">
+                    <select id="everydayActivities">
+                        <option value="gåture">Gåture</option>
+                        <option value="rengøring">Rengøring</option>
+                        <option value="havearbejde">Havearbejde</option>
+                    </select>
+                    <input type="number" id="hoursEveryday" placeholder="Timer" min="0" step="0.5">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="sportsActivities">Sportsaktiviteter:</label>
+                <div class="input-group">
+                    <select id="sportsActivities">
+                        <option value="fodbold">Fodbold</option>
+                        <option value="løb">Løb</option>
+                        <option value="svømning">Svømning</option>
+                    </select>
+                    <input type="number" id="hoursSports" placeholder="Timer" min="0" step="0.5">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="workActivities">Forskellige typer arbejde:</label>
+                <div class="input-group">
+                    <select id="workActivities">
+                        <option value="kontorarbejde">Kontorarbejde</option>
+                        <option value="bygningsarbejde">Bygningsarbejde</option>
+                        <option value="landbrugsarbejde">Landbrugsarbejde</option>
+                    </select>
+                    <input type="number" id="hoursWork" placeholder="Timer" min="0" step="0.5">
+                </div>
+            </div>
+            <button type="submit">Registrer Aktivitet</button>
+        </form>
+    </div>
+    <script src="activitytracker.js"></script>
+</body>
+</html>
