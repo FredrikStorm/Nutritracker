@@ -1,7 +1,7 @@
 // Importer nødvendige moduler
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 3100;
+const port = process.env.PORT || 3000;
 
 // Importer SQL og databasekonfigurasjon
 const sql = require('mssql');
