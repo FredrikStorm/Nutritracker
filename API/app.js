@@ -24,19 +24,30 @@ async function connectToDatabase() {
 // Koble til databasen ved oppstart
 connectToDatabase();
 
-app.get('/', async (req, res) => {
+// Post User 
+app.post('/api/user/profile/save_user/', async (req, res) => {
+    let sqlRequest = new sql.Request();
+    let sqlQuery = `INSERT INTO [user].profile (firstname, lastname, weight, age, gender, email, password)
+  VALUES ( @firstname, @lastname, @weight, @age, @gender, @email, @password)`;
+
+               
+    sqlRequest.input('firstname', sql.VarChar, req.body.firstname);
+    sqlRequest.input('lastname', sql.VarChar, req.body.lastname);
+    sqlRequest.input('weight', sql.Int, req.body.weight);
+    sqlRequest.input('age', sql.Int, req.body.age);
+    sqlRequest.input('gender', sql.VarChar, req.body.gender);
+    sqlRequest.input('email', sql.VarChar, req.body.email);
+    sqlRequest.input('password', sql.VarChar, req.body.password);
+ 
     try {
-        // Oppdatert for å hente alle data fra 'Address' tabellen i 'User' skjemaet
-        const result = await sql.query('SELECT * FROM [User].Address');
-        if (result.recordset.length > 0) {
-            res.json(result.recordset);
-        } else {
-            res.send('No address data found.');
-        }
+        const result = await sqlRequest.query(sqlQuery);
+        res.status(201).json({ message: 'User added successfully', result });
     } catch (err) {
-        res.status(500).send('Error while fetching data: ' + err.message);
+        console.log(err);
+        res.status(500).send('Error while inserting data: ' + err.message);
     }
 });
+
 
 // Start serveren og lytt på angitt port
 app.listen(port, () => {
