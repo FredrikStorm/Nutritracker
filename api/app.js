@@ -49,6 +49,17 @@ app.post('/api/user/profile/save_user/', async (req, res) => {
 });
 
 
+// Definer en GET-rute for å håndtere søk av ingredienser
+app.get('/api/user/activityTable', async (req, res) => {
+    const searchString = req.query.search || '';
+    try {
+        const ingredients = await getIngredients(searchString);
+        res.json(ingredients);
+    } catch (error) {
+        console.error('Error fetching ingredients:', error);
+        res.status(500).send('Error fetching ingredients');
+    }
+});
 // Start serveren og lytt på angitt port
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
