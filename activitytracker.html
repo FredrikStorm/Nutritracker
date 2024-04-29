@@ -9,7 +9,9 @@
 <body>
     <header>
         <div class="logo">
-            <img src="logo.jpg" alt="bilde av logo">
+            <a href="frontPage.html">
+                <img src="logo.jpg" alt="bilde av logo">
+            </a>
         </div>
         <div class="knapper">
             <a href="DailyNutri.html"><h3>Daily Nutri</h3></a>
@@ -47,36 +49,52 @@
     <h1>Aktivitetsregistrering</h1>
     <form id="activityForm">
         <div class="form-group">
-            <label for="everydayActivities">Almindelige hverdagsaktiviteter:</label>
+            <label for="everydayActivities">Aktiviteter:</label>
             <div class="input-group">
                 <select id="everydayActivities">
-                    <option value="almindeligGang">Almindelig gang</option>
-                    <option value="gangNedAfTrapper">Gang ned af trapper</option>
-                    <option value="gangOpAfTrapper">Gang op af trapper</option>
+                    <option value="1">Almindelig gang</option>
+                    <option value="2">Gang ned af trapper</option>
+                    <option value="3">Gang op af trapper</option>
+                    <option value="4">Slå græs med manuel græsslåmaskine</option>
+                    <option value="5">Lave mad og redde seng</option>
+                    <option value="6">Luge ukrudt</option>
+                    <option value="7">Rydde sne</option>
+                    <option value="8">Læse eller se tv</option>
+                    <option value="9">Stå oprejst</option>
+                    <option value="10">Cykling i roligt tempo</option>
+                    <option value="11">Tørre støv af</option>
+                    <option value="12">Vaske gulv</option>
+                    <option value="13">Pudse vinduer</option>
+                    <option value="14">Cardio</option>
+                    <option value="15">Hård styrketræning</option>
+                    <option value="16">Badminton</option>
+                    <option value="17">Volleyball</option>
+                    <option value="18">Bordtennis</option>
+                    <option value="19">Dans i højt tempo</option>
+                    <option value="20">Dans i moderat tempo</option>
+                    <option value="21">Fodbold</option>
+                    <option value="22">Rask gang</option>
+                    <option value="23">Golf</option>
+                    <option value="24">Håndbold</option>
+                    <option value="25">Squash</option>
+                    <option value="26">Jogging</option>
+                    <option value="27">Langrend</option>
+                    <option value="28">Løb i moderat tempo</option>
+                    <option value="29">Løb i højt tempo</option>
+                    <option value="30">Ridning</option>
+                    <option value="31">Skøjteløb</option>
+                    <option value="32">Svømning</option>
+                    <option value="33">Cykling i højt tempo</option>
+                    <option value="34">Bilreperation</option>
+                    <option value="35">Gravearbejde</option>
+                    <option value="36">Landbrugsarbejde</option>
+                    <option value="37">Let kontorarbejde</option>
+                    <option value="38">Male hus</option>
+                    <option value="39">Murerarbejde</option>
+                    <option value="40">Hugge og slæbe på brænde</option>
+
                 </select>
                 <input type="number" id="hoursEveryday" placeholder="Timer" min="0" step="0.5">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="sportsActivities">Sportsaktiviteter:</label>
-            <div class="input-group">
-                <select id="sportsActivities">
-                    <option value="fodbold">Fodbold</option>
-                    <option value="løb">Løb</option>
-                    <option value="svømning">Svømning</option>
-                </select>
-                <input type="number" id="hoursSports" placeholder="Timer" min="0" step="0.5">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="workActivities">Forskellige typer arbejde:</label>
-            <div class="input-group">
-                <select id="workActivities">
-                    <option value="kontorarbejde">Kontorarbejde</option>
-                    <option value="bygningsarbejde">Bygningsarbejde</option>
-                    <option value="landbrugsarbejde">Landbrugsarbejde</option>
-                </select>
-                <input type="number" id="hoursWork" placeholder="Timer" min="0" step="0.5">
             </div>
         </div>
         <button type="submit">Registrer Aktivitet</button>

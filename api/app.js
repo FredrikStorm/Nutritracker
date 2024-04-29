@@ -24,20 +24,17 @@ async function connectToDatabase() {
 // Koble til databasen ved oppstart
 connectToDatabase();
 
-app.get('/', async (req, res) => {
+// Definer en GET-rute for å håndtere søk av ingredienser
+app.get('/api/user/activityTable', async (req, res) => {
+    const searchString = req.query.search || '';
     try {
-        // Oppdatert for å hente alle data fra 'Address' tabellen i 'User' skjemaet
-        const result = await sql.query('SELECT * FROM [User].Address');
-        if (result.recordset.length > 0) {
-            res.json(result.recordset);
-        } else {
-            res.send('No address data found.');
-        }
-    } catch (err) {
-        res.status(500).send('Error while fetching data: ' + err.message);
+        const ingredients = await getIngredients(searchString);
+        res.json(ingredients);
+    } catch (error) {
+        console.error('Error fetching ingredients:', error);
+        res.status(500).send('Error fetching ingredients');
     }
 });
-
 // Start serveren og lytt på angitt port
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);

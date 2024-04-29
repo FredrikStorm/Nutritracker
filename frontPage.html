@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Nutri</title>
-   
-    <link rel="stylesheet" href="DailyNutri.css">
+    <link rel="stylesheet" href="frontPage.css">
 </head>
-
 <body>
     <header>
         <div class="logo">
@@ -25,37 +22,13 @@
         </div>
     </header>
     <main>
-        <div id="container">
-            <div id="headline">
-                <h2>Daily Nutri</h2>
-                <h3>Your registered meals for the last 24 hours:</h3>
-
-            </div>
-
-            <div id="content">
-                <table id="DNTable">
-                    <tr>
-
-                        <th>Time</th>
-                        <th>Meals</th>
-                        <th>Water (L)</th>
-                        <th>Kcal consumed</th>
-                    </tr>
-
-                    <tbody id="DNBody">
-
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
+        <div class="center-image">
+            <img src="Frontpage picture.png" alt="Forsidebillede">
         </div>
-
-
+        <div class="footer-buttons">
+            <button onclick="window.location.href='signup.html';">Signup</button>
+            <button onclick="window.location.href='login.html';">Login</button>
+        </div>
     </main>
 </body>
-<script src="DailyNutri.js"></script>
-
 </html>
