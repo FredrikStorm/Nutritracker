@@ -41,47 +41,49 @@
         </form>
         <div id="result"></div>
     </div>
-    
+
 <!--Her er aktivitets tracker-->
-    <div class="container">
-        <h1>Aktivitetsregistrering</h1>
-        <form id="activityForm">
-            <div class="form-group">
-                <label for="everydayActivities">Almindelige hverdagsaktiviteter:</label>
-                <div class="input-group">
-                    <select id="everydayActivities">
-                        <option value="gåture">Gåture</option>
-                        <option value="rengøring">Rengøring</option>
-                        <option value="havearbejde">Havearbejde</option>
-                    </select>
-                    <input type="number" id="hoursEveryday" placeholder="Timer" min="0" step="0.5">
-                </div>
+<div class="container">
+    <h1>Aktivitetsregistrering</h1>
+    <form id="activityForm">
+        <div class="form-group">
+            <label for="everydayActivities">Almindelige hverdagsaktiviteter:</label>
+            <div class="input-group">
+                <select id="everydayActivities">
+                    <option value="almindeligGang">Almindelig gang</option>
+                    <option value="gangNedAfTrapper">Gang ned af trapper</option>
+                    <option value="gangOpAfTrapper">Gang op af trapper</option>
+                </select>
+                <input type="number" id="hoursEveryday" placeholder="Timer" min="0" step="0.5">
             </div>
-            <div class="form-group">
-                <label for="sportsActivities">Sportsaktiviteter:</label>
-                <div class="input-group">
-                    <select id="sportsActivities">
-                        <option value="fodbold">Fodbold</option>
-                        <option value="løb">Løb</option>
-                        <option value="svømning">Svømning</option>
-                    </select>
-                    <input type="number" id="hoursSports" placeholder="Timer" min="0" step="0.5">
-                </div>
+        </div>
+        <div class="form-group">
+            <label for="sportsActivities">Sportsaktiviteter:</label>
+            <div class="input-group">
+                <select id="sportsActivities">
+                    <option value="fodbold">Fodbold</option>
+                    <option value="løb">Løb</option>
+                    <option value="svømning">Svømning</option>
+                </select>
+                <input type="number" id="hoursSports" placeholder="Timer" min="0" step="0.5">
             </div>
-            <div class="form-group">
-                <label for="workActivities">Forskellige typer arbejde:</label>
-                <div class="input-group">
-                    <select id="workActivities">
-                        <option value="kontorarbejde">Kontorarbejde</option>
-                        <option value="bygningsarbejde">Bygningsarbejde</option>
-                        <option value="landbrugsarbejde">Landbrugsarbejde</option>
-                    </select>
-                    <input type="number" id="hoursWork" placeholder="Timer" min="0" step="0.5">
-                </div>
+        </div>
+        <div class="form-group">
+            <label for="workActivities">Forskellige typer arbejde:</label>
+            <div class="input-group">
+                <select id="workActivities">
+                    <option value="kontorarbejde">Kontorarbejde</option>
+                    <option value="bygningsarbejde">Bygningsarbejde</option>
+                    <option value="landbrugsarbejde">Landbrugsarbejde</option>
+                </select>
+                <input type="number" id="hoursWork" placeholder="Timer" min="0" step="0.5">
             </div>
-            <button type="submit">Registrer Aktivitet</button>
-        </form>
-    </div>
-    <script src="activitytracker.js"></script>
+        </div>
+        <button type="submit">Registrer Aktivitet</button>
+    </form>
+    <div id="result2"></div>
+</div>
+<script src="activitytracker.js"></script>
+
 </body>
 </html>

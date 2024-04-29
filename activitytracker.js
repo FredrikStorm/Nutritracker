@@ -55,3 +55,17 @@ document.getElementById('stofskifteForm').addEventListener('submit', function(ev
 });
 
 /*Aktivitets beregner*/
+document.getElementById('activityForm').addEventListener('submit', function(event) {
+    event.preventDefault();  // Forhindre formen i at sende data
+
+    const activityType = document.getElementById('everydayActivities').value;
+    const hours = parseFloat(document.getElementById('hoursEveryday').value);
+
+    if (activityType === 'almindeligGang' && hours > 0) {
+        const result = 215 * hours;
+        document.getElementById('result2').textContent = `Resultat: Du har forbrændt ${result} kalorier.`;
+    } else {
+        document.getElementById('result2').textContent = "";
+    }
+});
+
