@@ -7,12 +7,11 @@ const { getIngredients, getNutritionalInfo, saveRecipe, getRecipes } = require('
 const app = express();
 const port = process.env.PORT || 3000;
 
-const corsOptions = {
-    origin: '*',  // For sikkerhetsformål bør dette begrenses i produksjonsmiljøer
-    methods: ['GET', 'POST', 'PUT', 'DELETE']
-};
-app.use(cors(corsOptions));
-
+//cor tillater at applikasjon kan sende forespørsler til serveren 
+const cors = require('cors');
+app.use(cors({
+  origin: '*'
+}));
 
 
 //app.use(cors());
@@ -22,7 +21,6 @@ app.use(express.json());
 app.get('/api/foodbank/food', async (req, res) => {
     const searchString = req.query.search || '';
     try {
-<<<<<<< HEAD
         const ingredients = await getIngredients(searchString);
         res.json(ingredients);
     } catch (error) {
@@ -92,7 +90,6 @@ app.get('/api/user/recipe', async (req, res) => {
 
 
 
-=======
         await sql.connect(dbConfig);
         console.log('Connected to the Azure SQL database.');
     } catch (err) {
@@ -109,8 +106,7 @@ app.post('/api/user/profile/save_user/', async (req, res) => {
     let sqlRequest = new sql.Request();
     let sqlQuery = `INSERT INTO [user].profile (firstname, lastname, weight, age, gender, email, password)
   VALUES ( @firstname, @lastname, @weight, @age, @gender, @email, @password)`;
-
-               
+          
     sqlRequest.input('firstname', sql.VarChar, req.body.firstname);
     sqlRequest.input('lastname', sql.VarChar, req.body.lastname);
     sqlRequest.input('weight', sql.Int, req.body.weight);
@@ -129,6 +125,12 @@ app.post('/api/user/profile/save_user/', async (req, res) => {
 });
 
 
+//GET-rute for profildata
+app.get('/api/user/profile/'), async (req, res)=>{
+
+}
+
+
 // Definer en GET-rute for å håndtere søk av ingredienser
 app.get('/api/user/activityTable', async (req, res) => {
     const searchString = req.query.search || '';
@@ -141,7 +143,6 @@ app.get('/api/user/activityTable', async (req, res) => {
     }
 });
 // Start serveren og lytt på angitt port
->>>>>>> 7f875a8538a05969a5ff1c03fa66e61be6c2913e
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
