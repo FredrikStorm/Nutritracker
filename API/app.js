@@ -22,6 +22,7 @@ app.use(express.json());
 app.get('/api/foodbank/food', async (req, res) => {
     const searchString = req.query.search || '';
     try {
+<<<<<<< HEAD
         const ingredients = await getIngredients(searchString);
         res.json(ingredients);
     } catch (error) {
