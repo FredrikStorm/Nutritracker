@@ -22,7 +22,6 @@ app.use(express.json());
 app.get('/api/foodbank/food', async (req, res) => {
     const searchString = req.query.search || '';
     try {
-<<<<<<< HEAD
         const ingredients = await getIngredients(searchString);
         res.json(ingredients);
     } catch (error) {
@@ -92,18 +91,6 @@ app.get('/api/user/recipe', async (req, res) => {
 
 
 
-=======
-        await sql.connect(dbConfig);
-        console.log('Connected to the Azure SQL database.');
-    } catch (err) {
-        console.error('Failed to connect to the database:', err);
-        process.exit(1); // Avslutter programmet ved kritisk feil
-    }
-}
-
-// Koble til databasen ved oppstart
-connectToDatabase();
-
 // Post User 
 app.post('/api/user/profile/save_user/', async (req, res) => {
     let sqlRequest = new sql.Request();
@@ -141,8 +128,21 @@ app.get('/api/user/activityTable', async (req, res) => {
     }
 });
 // Start serveren og lytt på angitt port
->>>>>>> 7f875a8538a05969a5ff1c03fa66e61be6c2913e
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
 
+// Koble til databasen ved oppstart
+connectToDatabase();
+
+
+/*
+        await sql.connect(dbConfig);
+        console.log('Connected to the Azure SQL database.');
+    } catch (err) {
+        console.error('Failed to connect to the database:', err);
+        process.exit(1); // Avslutter programmet ved kritisk feil
+    }
+}
+
+*/
