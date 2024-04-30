@@ -147,3 +147,17 @@ app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
 
+// Koble til databasen ved oppstart
+connectToDatabase();
+
+
+/*
+        await sql.connect(dbConfig);
+        console.log('Connected to the Azure SQL database.');
+    } catch (err) {
+        console.error('Failed to connect to the database:', err);
+        process.exit(1); // Avslutter programmet ved kritisk feil
+    }
+}
+
+*/
