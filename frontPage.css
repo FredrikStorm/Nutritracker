@@ -42,29 +42,5 @@ header {
     margin-top: 20px;
 }
 
-.center-image img {
-    max-width: 90%; /* Adjust maximum width */
-    height: auto;
-}
 
-.footer-buttons {
-    display: flex;
-    justify-content: center;
-    padding: 20px 0;
-}
 
-.footer-buttons button {
-    padding: 15px 30px; /* Bigger padding for larger buttons */
-    font-size: 16px; /* Larger font size */
-    margin: 0 70px;
-    cursor: pointer;
-    background-color: #4CAF50; /* Using green color */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-
-.footer-buttons button:hover {
-    background-color: #45a049;
-}
