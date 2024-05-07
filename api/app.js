@@ -7,12 +7,11 @@ const { getIngredients, getNutritionalInfo, saveRecipe, getRecipes } = require('
 const app = express();
 const port = process.env.PORT || 3000;
 
-const corsOptions = {
-    origin: '*',  // For sikkerhetsformål bør dette begrenses i produksjonsmiljøer
-    methods: ['GET', 'POST', 'PUT', 'DELETE']
-};
-app.use(cors(corsOptions));
-
+//cor tillater at applikasjon kan sende forespørsler til serveren 
+const cors = require('cors');
+app.use(cors({
+  origin: '*'
+}));
 
 
 //app.use(cors());
@@ -91,13 +90,23 @@ app.get('/api/user/recipe', async (req, res) => {
 
 
 
+        await sql.connect(dbConfig);
+        console.log('Connected to the Azure SQL database.');
+    } catch (err) {
+        console.error('Failed to connect to the database:', err);
+        process.exit(1); // Avslutter programmet ved kritisk feil
+    }
+}
+
+// Koble til databasen ved oppstart
+connectToDatabase();
+
 // Post User 
 app.post('/api/user/profile/save_user/', async (req, res) => {
     let sqlRequest = new sql.Request();
     let sqlQuery = `INSERT INTO [user].profile (firstname, lastname, weight, age, gender, email, password)
   VALUES ( @firstname, @lastname, @weight, @age, @gender, @email, @password)`;
-
-               
+          
     sqlRequest.input('firstname', sql.VarChar, req.body.firstname);
     sqlRequest.input('lastname', sql.VarChar, req.body.lastname);
     sqlRequest.input('weight', sql.Int, req.body.weight);
@@ -114,6 +123,12 @@ app.post('/api/user/profile/save_user/', async (req, res) => {
         res.status(500).send('Error while inserting data: ' + err.message);
     }
 });
+
+
+//GET-rute for profildata
+app.get('/api/user/profile/'), async (req, res)=>{
+
+}
 
 
 // Definer en GET-rute for å håndtere søk av ingredienser
