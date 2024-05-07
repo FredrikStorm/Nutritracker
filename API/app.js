@@ -1,11 +1,10 @@
-
-
-
+const session = require('express-session');
 const express = require('express');
 const cors = require('cors');
 const { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMeal } = require('./database'); // Oppdatert for å inkludere de nye funksjonene
 const app = express();
 const port = process.env.PORT || 3000;
+
 
 const corsOptions = {
     origin: '*',
@@ -14,8 +13,8 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-//const sql = require('mssql');
-//const dbConfig = require('./dbconfig');
+const sql = require('mssql');
+const dbConfig = require('./dbconfig');
 
 
 //app.use(cors());
