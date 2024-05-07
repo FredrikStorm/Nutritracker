@@ -1,6 +1,7 @@
 const session = require('express-session');
 const express = require('express');
 const cors = require('cors');
+const session = require('express-session');
 const { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMeal } = require('./database'); // Oppdatert for å inkludere de nye funksjonene
 const app = express();
 const port = process.env.PORT || 3000;
@@ -34,6 +35,7 @@ app.use(session({
     saveUninitialized: false,
     cookie: { secure: false }
 }));
+
 
 
 // Databaseforbindelsesfunksjon
