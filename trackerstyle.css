@@ -88,3 +88,54 @@ header {
 }
 
 
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; /* Større bredde for å håndtere horisontal layout */
+    padding: 20px;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; /* Full bredde til container */
+    margin-bottom: 20px;
+}
+
+.popup select,
+.popup input,
+.popup button {
+    margin: 0 10px; /* Gir litt avstand mellom elementene */
+    flex-grow: 1; /* La hvert element vokse for å fylle containeren */
+}
+
+
+.meal-tracker-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.meal-tracker-table th, .meal-tracker-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+.meal-tracker-table th {
+    background-color: #f4f4f4;
+}
+
+
+
+.knapp:hover {
+    background-color: #0056b3;
+}

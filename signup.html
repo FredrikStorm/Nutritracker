@@ -1,3 +1,4 @@
+signup.html:
 <html>
 <head>
     <meta charset="UTF-8">
@@ -14,16 +15,24 @@
         <h2>Opret Profil</h2>
         <form>
             <div class="input-group">
-                <label for="name">Navn:</label>
-                <input type="text" id="name" name="name" required>
+                <label for="firstName">Fornavn:</label>
+                <input type="text" id="firstname" name="firstname" required>
+            </div>
+            <div class="input-group">
+                <label for="lastname">Etternavn:</label>
+                <input type="text" id="lastname" name="lastname" required>
             </div>
             <div class="input-group">
                 <label for="email">Emailadresse:</label>
                 <input type="email" id="email" name="email" required>
             </div>
             <div class="input-group">
+                <label for="password">Sett passord:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="input-group">
                 <label for="weight">Vægt (kg):</label>
-                <input type="number" id="weigth" name="weight" required>
+                <input type="number" id="weight" name="weight" required>
             </div>
             <div class="input-group">
                 <label for="age">Alder:</label>
@@ -38,7 +47,7 @@
                     <option value="other">Andet</option>
                 </select>
             </div>
-            <button type="button" onclick="saveInfo()">Opret Profil</button>
+            <button type="button" onclick="saveNewUser()">Opret Profil</button>
         </form>
     </div>
 </body>

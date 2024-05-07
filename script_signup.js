@@ -1,20 +1,40 @@
+async function saveNewUser() {
+    try {
+        const firstname = document.getElementById('firstname').value;
+        const lastname = document.getElementById('lastname').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const weight = document.getElementById('weight').value;
+        const age = document.getElementById('age').value;
+        const dropdown = document.getElementById('gender');
+        const gender = dropdown.options[dropdown.selectedIndex].value;
 
-function saveInfo() {
-    console.log('1')
-    let name = document.getElementById('name').value;
-    let email = document.getElementById('email').value;
-    let weigth = document.getElementById('weigth').value;
-    let age = document.getElementById('age').value;
-    let dropdown = document.getElementById('gender');
-    let gender = dropdown.options[dropdown.selectedIndex].value; // Her kan du bruge .value for at få værdien, eller .text for at få den viste tekst
+        const newUser = { firstname, lastname, email, password, weight, age, gender };
 
-    const apiUrl = `http://localhost:3100/api/user/profile/save_user/`
+        // Sjekker om brukeren finnes fra før
+        const emailSearchResponse = await fetch('http://localhost:3000/api/user/profile?email=${email}');
+        if (emailSearchResponse.ok) {
+            alert("Finnes allerede en bruker under dette brukernavnet, vennligst logg inn med din eksisterende bruker");
+            window.location.replace('login.html');
+            return;
+        } else if (emailSearchResponse.status === 404) {
+            // Registrer ny bruker siden de ikke finnes fra før
+            const saveResponse = await fetch('http://localhost:3000/api/user/profile/save_user/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newUser)
+            });
+            if (!saveResponse.ok) {
+                throw new Error('HTTP error! Status: ${saveResponse.status}');
+            }
 
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => updateFoodList(data))
-        .catch(error => console.error('Problem with fetch operation:', error));
+            const userData = await saveResponse.json(); // Anta at dette inkluderer userID
+            console.log(userData);
 
-
+        } else {
+            throw new Error('Unexpected error: ${emailSearchResponse.statusText}');
+        }
+    } catch (error) {
+        console.error('Error:', error.message);
+    }
 }
-
