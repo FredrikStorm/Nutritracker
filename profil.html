@@ -15,17 +15,21 @@
         <form>
             <div class="input-group">
                 <label for="age">Alder:</label>
+               <input type="number" id="ageBox">
             </div>
             <div class="input-group">
                 <label for="gender">Køn:</label>
-                </select>
+                <input type="text"id="genderBox">
             </div>
             <div class="input-group">
                 <label for="weight">Vægt (kg):</label>
+                <input type="number" id="weightBox">
             </div>
-            <button type="submit" class="update-button">Rediger Profil</button>
+            <button id="update-button" type="button" onclick="saveChanges()">Save changes</button>
         </form>
-        <button class="delete-button">Slet Profil</button>
+        <button id="delete-button" type="button" onclick="deleteProfile()">Slet Profil</button>
     </div>
+    <script src="script_editProfile.js"></script>
 </body>
+
 </html>
