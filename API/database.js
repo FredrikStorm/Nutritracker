@@ -227,6 +227,20 @@ async function deleteMeal(mealID) {
 }
 
 
+//legge til vann 
+async function logWater(userID) {
+    try {
+        await sql.connect(dbConfig);  // Sørg for at dette fungerer som forventet
+        let request = new sql.Request();
+        request.input('userID', sql.Int, userID);
+        // Bruker nå korrekt tabellnavn og kolonnenavn som i din database
+        const result = await request.query('INSERT INTO [user].water (userID) VALUES (@userID)');
+        return { success: true, recordset: result.recordset };
+    } catch (error) {
+        console.error('Failed to log water intake:', error);
+        throw error; // Kaster feilen videre slik at den kan håndteres av kalleren
+    }
+}
 
 
 
@@ -234,7 +248,8 @@ async function deleteMeal(mealID) {
 
 
 
-module.exports = { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMealWeight,  deleteMeal, getUserInfo, changeUserInfo };
+
+module.exports = { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMealWeight,  deleteMeal, getUserInfo, changeUserInfo, logWater };
 
 
 
