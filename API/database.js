@@ -229,15 +229,12 @@ async function deleteMeal(mealID) {
 
 
 
-<<<<<<< HEAD
-module.exports = { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMealWeight, deleteMeal };
-=======
 
 
 
 
-module.exports = { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMeal, getUserInfo,changeUserInfo };
->>>>>>> e3585c7057a95c01cbb1fe650e31f5b801074bed
+
+module.exports = { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMealWeight,  deleteMeal, getUserInfo, changeUserInfo };
 
 
 

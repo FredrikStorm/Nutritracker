@@ -154,7 +154,9 @@ function addRecipeToList() {
     };
 
     const recipeName = recipeNameField.value.trim();
-    const userID = 2;  // Bruker en statisk verdi for nå
+    const userID = parseInt(localStorage.getItem('userID'), 10);
+    console.log(typeof userID, userID);
+
 
     fetch('http://localhost:3000/api/user/recipe', {  
         method: 'POST',
@@ -243,7 +245,8 @@ function addToRecipeSummary() {
 
 
 function loadRecipes() {
-    fetch('http://localhost:3000/api/user/recipe?userID=2')
+    const userID = parseInt(localStorage.getItem('userID'), 10);
+    fetch(`http://localhost:3000/api/user/recipe?userID=${userID}`)
         .then(response => response.json())
         .then(recipes => {
             if(recipes && recipes.length) {
