@@ -10,6 +10,17 @@ const dbConfig = {
     }
 };
 
+async function getDbConnection() {
+    try {
+        const pool = await sql.connect(dbConfig);
+        console.log("Connected to SQL database successfully.");
+        return pool; // This pool will be used to run queries
+    } catch (err) {
+        console.error('Failed to connect to the database:', err);
+        throw err; // Rethrow the error for caller to handle
+    }
+}
+
 async function getIngredients(searchString) {
     try {
         await sql.connect(dbConfig);
