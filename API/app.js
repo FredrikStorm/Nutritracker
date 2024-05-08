@@ -2,7 +2,11 @@
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
+<<<<<<< HEAD
 const { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, deleteMeal, updateMealWeight } = require('./database'); // Oppdatert for å inkludere de nye funksjonene
+=======
+const { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMeal, getUserInfo, changeUserInfo } = require('./database'); // Oppdatert for å inkludere de nye funksjonene
+>>>>>>> e3585c7057a95c01cbb1fe650e31f5b801074bed
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -71,13 +75,12 @@ app.post('/api/user/profile/save_user/', async (req, res) => {
 
     try {
         const result = await sqlRequest.query(sqlQuery);
-        const userID = result.recordset[0].userID;
-        //userID lagres i Session
-        req.session.userID = userID;
+        const userID = result.recordset[0];
+        //req.session.userID = userID; // Lagre userID i session
+        //console.log("Session UserID:", req.session.userID);
+        
+        res.status(201).json({ userID });
 
-        if(req.session.userID){
-            res.status(201).json({ userID });
-        }
         
     } catch (err) {
         console.log(err);
@@ -86,13 +89,15 @@ app.post('/api/user/profile/save_user/', async (req, res) => {
 });
 
 
-// GET-rute for profildata
-app.get('/api/user/profile/', async (req, res) => {
+// GET-rute for henting av profildata
+app.get('/api/user/profile', async (req, res) => {
     let sqlRequest = new sql.Request();
     let sqlQuery = `SELECT * FROM [user].profile WHERE email = @email;`;
 
     // Her bruker vi en query-parameter fra URLen
     const userEmail = req.query.email;
+    console.log('Email received:', userEmail);
+
 
     sqlRequest.input('email', sql.VarChar, userEmail);
 
@@ -104,10 +109,41 @@ app.get('/api/user/profile/', async (req, res) => {
         } else {
             res.status(404).send('User not found');
         }
-    } catch (err) {
-        console.log(err);
-        res.status(500).send('Error while retrieving data: ' + err.message);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Error while retrieving data: ' + error.message);
     }
+});
+
+// hente data til profilsiden:
+app.get('/api/user/profile/edit', async (req, res) => {
+    const userID=req.query.userID;
+   // res.json(userID);
+    console.log(userID);
+    try {
+        const userInfo = await getUserInfo(userID);
+        console.log(userInfo)
+        res.json(userInfo);
+    } catch (error) {
+        console.error('Error fething userInfo:', error);
+        res.status(500).send('Error fetching recipe userInfo');
+    }
+});
+
+// endre profil-data i databasen
+app.put('/api/user/profile/edit/save_changes',async(req,res)=> {
+
+    const { userID, age, gender, weight } = req.body;
+    console.log(req.body)
+
+    try {
+        const result = await changeUserInfo(userID, age, gender, weight);
+        res.status(200).json({ message: "User updated successfully", result });
+    } catch (error) {
+        console.error('Error updating meal:', error);
+        res.status(500).send('Error updating meal');
+    }
+
 });
 
 
@@ -133,8 +169,8 @@ app.get('/api/foodbank/foodParameter', async (req, res) => {
     console.log("Received foodID from client:", foodID);
     console.log("Received parameterID from client:", parameterID);
     try {
-        const nutrition = await getNutritionalInfo(foodID, parameterID);
-        res.json(nutrition);
+        const userInfo = await getNutritionalInfo(foodID, parameterID);
+        res.json(userInfo);
     } catch (error) {
         console.error('Error fetching nutritional information:', error);
         res.status(500).send('Error fetching nutritional information');
@@ -211,11 +247,11 @@ app.get('/api/user/activityTable', async (req, res) => {
 app.get('/api/user/recipe/:recipeId', async (req, res) => {
     const recipeId = req.params.recipeId;
     try {
-        const nutrition = await getRecipeNutrition(recipeId);
-        res.json(nutrition);
+        const userInfo = await getRecipeNutrition(recipeId);
+        res.json(userInfo);
     } catch (error) {
-        console.error('Error fetching recipe nutrition:', error);
-        res.status(500).send('Error fetching recipe nutrition');
+        console.error('Error fetching recipe userInfo:', error);
+        res.status(500).send('Error fetching recipe userInfo');
     }
 });
 

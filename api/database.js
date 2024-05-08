@@ -89,10 +89,45 @@ async function getRecipes(userID) {
     }
 }
 
+//Kode for user information---------------------------------------------------------------------
+
+async function getUserInfo(userID){
+    try{
+        await sql.connect(dbConfig);
+        const result = await sql.query(`
+        SELECT age, gender, weight
+        FROM [user].profile
+        WHERE userID = ${userID}  
+    `);
+    return result.recordset[0];
+   
+    }
+    catch(err){
+        console.error('Error fetching user info:',err)
+    }
+}
+
+async function changeUserInfo(userID, age, gender, weight) {
+    let sqlRequest = new sql.Request(); // Sørg for at dette objektet er konsistent brukt
+
+    sqlRequest.input('userID', sql.Int, userID);
+    sqlRequest.input('age', sql.Int, age);
+    sqlRequest.input('weight', sql.Int, weight); 
+    sqlRequest.input('gender', sql.VarChar, gender);
+
+    const result = await sqlRequest.query(`
+        UPDATE [user].profile 
+        SET
+        weight = @weight,
+        age = @age,
+        gender = @gender
+        WHERE userID = @userID;
+    `); 
+    return result.recordset; 
+}
 
 
-
-// kode for tracker ___----------------------------------------------------------------
+// kode for tracker---------------------------------------------------------------------------
 
 
 async function getRecipeNutrition(recipeId) {
@@ -194,7 +229,15 @@ async function deleteMeal(mealID) {
 
 
 
+<<<<<<< HEAD
 module.exports = { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMealWeight, deleteMeal };
+=======
+
+
+
+
+module.exports = { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMeal, getUserInfo,changeUserInfo };
+>>>>>>> e3585c7057a95c01cbb1fe650e31f5b801074bed
 
 
 

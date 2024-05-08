@@ -3,8 +3,8 @@ async function login() {
     let email = document.getElementById('username').value;
     let password = document.getElementById('password').value;
     
-    let getUserApiUrl = 'http://localhost:3000/api/user/profile?email=${email}';
-    let saveToSessionApiUrl='http://localhost:3000/api/session/POST/';
+    let getUserApiUrl = `http://localhost:3000/api/user/profile?email=${email}`;
+   
 
     fetch(getUserApiUrl)
         .then(response => {
@@ -15,7 +15,7 @@ async function login() {
                     window.location.replace('signup.html'); // Redirect to signup if user not found
                     alert("Ingen bruker funnet under det brukernavnet, vennligst registrer deg først");
                 }
-                throw new Error('Network response was not ok: ${response.statusText}');
+                throw new Error(`Network response was not ok: ${response.statusText}`);
             }
             return response.json();
         })
@@ -23,27 +23,14 @@ async function login() {
 
             //sjekker om passordet koresponderer med 
             if (data.password === password) {
-
-                // Sender brukerens ID til serveren for å lagre i session
-                fetch(saveToSessionApiUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ userID: data.userID })
-                })
-                .then(response => {
-                    if (response.ok) {
-                        console.log('Saved');
-                        //Brukeren er nå autentisert, og sessionen er oppdatert
-                        window.location.replace('dailynutri.html');
-                    } else {
-                        throw new Error('Failed to update session');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                const callsign='userID'
+                const userID =data.userID
+                localStorage.setItem(callsign, JSON.stringify(userID))
+                window.location.replace('profil.html');
+                
+            }
+            else{
+                prompt('Feil passord, prøv igjen')
             }
 
         })

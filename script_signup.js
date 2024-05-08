@@ -12,8 +12,8 @@ async function saveNewUser() {
         const newUser = { firstname, lastname, email, password, weight, age, gender };
 
         // Sjekker om brukeren finnes fra før
-        const emailSearchResponse = await fetch('http://localhost:3000/api/user/profile?email=${email}');
-        if (emailSearchResponse.ok) {
+        const emailSearchResponse = await fetch(`http://localhost:3000/api/user/profile?email=${email}`);
+         if (emailSearchResponse.ok) {
             alert("Finnes allerede en bruker under dette brukernavnet, vennligst logg inn med din eksisterende bruker");
             window.location.replace('login.html');
             return;
@@ -24,12 +24,18 @@ async function saveNewUser() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newUser)
             });
+
             if (!saveResponse.ok) {
                 throw new Error('HTTP error! Status: ${saveResponse.status}');
             }
 
-            const userData = await saveResponse.json(); // Anta at dette inkluderer userID
+            const userData = await saveResponse.json(); 
             console.log(userData);
+
+            const callsign='userID'
+                const userID =userData.userID
+                localStorage.setItem(callsign, JSON.stringify(userID))
+               // window.location.replace('profil.html');
 
         } else {
             throw new Error('Unexpected error: ${emailSearchResponse.statusText}');
