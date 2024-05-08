@@ -103,7 +103,7 @@ async function getUserInfo(userID){
 }
 
 async function changeUserInfo(userID, age, gender, weight) {
-    let sqlRequest = new sql.Request(); // Sørg for at dette objektet er konsistent brukt
+    let sqlRequest = new sql.Request(); 
 
     sqlRequest.input('userID', sql.Int, userID);
     sqlRequest.input('age', sql.Int, age);
@@ -121,6 +121,17 @@ async function changeUserInfo(userID, age, gender, weight) {
     return result.recordset; 
 }
 
+async function deleteUser(userID){
+    let sqlRequest = new sql.Request(); 
+
+    sqlRequest.input('userID', sql.Int, userID);
+
+    const result = await sqlRequest.query(`
+    DELETE [user].profile where userID = @userID;
+    `);
+    return result;
+
+}
 
 // kode for tracker---------------------------------------------------------------------------
 
@@ -217,7 +228,7 @@ async function updateMeal(mealId, date, time, location, weight, kcal, protein, f
 
 
 
-module.exports = { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMeal, getUserInfo,changeUserInfo };
+module.exports = { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMeal, getUserInfo,changeUserInfo,deleteUser };
 
 
 

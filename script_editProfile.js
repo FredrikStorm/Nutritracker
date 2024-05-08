@@ -3,6 +3,7 @@ const userID = localStorage.getItem('userID')
 console.log(userID);
 const getInfoApi=`http://localhost:3000/api/user/profile/edit?userID=${userID}`;
 const putInfoApi=`http://localhost:3000/api/user/profile/edit/save_changes`;
+const deleteUserApi=`http://localhost:3000/api/user/profile/delete?userID=${userID}`;
 document.addEventListener('DOMContentLoaded', function () {
    
     fetch(getInfoApi)
@@ -17,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     })
     .then(data => {
         
-        console.log(data);  // Logger JSON-dataene til konsollen
+   
         document.getElementById('ageBox').value = data.age;
         document.getElementById('genderBox').value = data.gender;
         document.getElementById('weightBox').value = data.weight;
@@ -31,11 +32,12 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 async function saveChanges(){
-   let newAge=document.getElementById('ageBox').value;
-   let newGender=document.getElementById('genderBox').value;
-   let newWeight=document.getElementById('weightBox').value;
+   let age=document.getElementById('ageBox').value;
+   let gender=document.getElementById('genderBox').value;
+   let weight=document.getElementById('weightBox').value;
 
-   const data = { userID, newAge, newGender, newWeight};
+   const data = { userID, age, gender, weight};
+
    fetch(putInfoApi, {
         method: 'PUT',
         headers: {
@@ -63,3 +65,30 @@ async function saveChanges(){
 
 }
 
+async function deleteProfile(){
+
+    fetch(deleteUserApi, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userID: userID }) // Endret til å sende et objekt
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.replace('frontPage.html');
+            return response.json();
+        } else {
+            throw new Error('Failed to delete User');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+}
+
+function logOut(){
+    localStorage.removeItem('userID');
+    window.location.replace('frontPage.html');
+}

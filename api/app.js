@@ -2,7 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
-const { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMeal, getUserInfo, changeUserInfo } = require('./database'); // Oppdatert for å inkludere de nye funksjonene
+const { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMeal, getUserInfo, changeUserInfo,deleteUser } = require('./database'); // Oppdatert for å inkludere de nye funksjonene
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -114,8 +114,7 @@ app.get('/api/user/profile', async (req, res) => {
 // hente data til profilsiden:
 app.get('/api/user/profile/edit', async (req, res) => {
     const userID=req.query.userID;
-   // res.json(userID);
-    console.log(userID);
+
     try {
         const userInfo = await getUserInfo(userID);
         console.log(userInfo)
@@ -130,18 +129,33 @@ app.get('/api/user/profile/edit', async (req, res) => {
 app.put('/api/user/profile/edit/save_changes',async(req,res)=> {
 
     const { userID, age, gender, weight } = req.body;
-    console.log(req.body)
+    console.log({userID, age, gender, weight})
+    console.log(req.body);
 
     try {
         const result = await changeUserInfo(userID, age, gender, weight);
         res.status(200).json({ message: "User updated successfully", result });
     } catch (error) {
-        console.error('Error updating meal:', error);
-        res.status(500).send('Error updating meal');
+        console.error('Error updating user:', error);
+        res.status(500).send('Error updating user');
     }
 
 });
 
+// slette 
+app.delete('/api/user/profile/delete',async(req,res)=>{
+    let { userID } = req.body; 
+    try{
+        await deleteUser(userID);
+        res.status(200).json({ message: "User updated successfully"});
+
+    }
+    catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).send('Error deleting user');
+    }
+
+})
 
 
 
