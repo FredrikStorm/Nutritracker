@@ -2,11 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
-<<<<<<< HEAD
-const { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, deleteMeal, updateMealWeight } = require('./database'); // Oppdatert for å inkludere de nye funksjonene
-=======
-const { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMeal, getUserInfo, changeUserInfo } = require('./database'); // Oppdatert for å inkludere de nye funksjonene
->>>>>>> e3585c7057a95c01cbb1fe650e31f5b801074bed
+const { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, deleteMeal, updateMealWeight, getUserInfo, changeUserInfo } = require('./database'); // Oppdatert for å inkludere de nye funksjonene
 const app = express();
 const port = process.env.PORT || 3000;
 

@@ -35,7 +35,7 @@ async function saveNewUser() {
             const callsign='userID'
                 const userID =userData.userID
                 localStorage.setItem(callsign, JSON.stringify(userID))
-               // window.location.replace('profil.html');
+                 window.location.replace('profil.html');
 
         } else {
             throw new Error('Unexpected error: ${emailSearchResponse.statusText}');

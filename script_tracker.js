@@ -116,12 +116,13 @@ function fetchNutritionInfo(foodID, amount, recipeName) {
 }
 
 function createRecipe(foodName, nutrients, amount) {
+    const userID = parseInt(localStorage.getItem('userID'), 10);
     return fetch('http://localhost:3000/api/user/recipe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             recipeName: foodName,
-            userID: 2,
+            userID: userID,
             protein: nutrients.protein.toFixed(2),
             kcal: nutrients.calories.toFixed(2),
             fat: nutrients.fat.toFixed(2),
@@ -149,7 +150,8 @@ function closePopup() {
 //-------------------------------------------------------------------------------------------------------------------------------------
 
 function openRecipeSelector() {
-    fetch(`http://localhost:3000/api/user/recipe?userID=2`)
+    const userID = parseInt(localStorage.getItem('userID'), 10);
+    fetch(`http://localhost:3000/api/user/recipe?userID=${userID}`)
         .then(response => {
             if (!response.ok) throw new Error('Failed to fetch');
             return response.json();
@@ -238,6 +240,7 @@ function confirmRegistration() {
 }
 
 function postMeal(date, time, location, weight, recipeId) {
+    const userID = parseInt(localStorage.getItem('userID'), 10);
     fetch('http://localhost:3000/api/user/meal', {
         method: 'POST',
         headers: {
@@ -248,7 +251,7 @@ function postMeal(date, time, location, weight, recipeId) {
             time: time,
             location: location,
             weight: weight,
-            userID: 2, // Example user ID
+            userID: userID, // Example user ID
             recipeID: recipeId
         })
     })
@@ -282,7 +285,7 @@ function postMeal(date, time, location, weight, recipeId) {
 
 
 function loadMeals() {
-    const userID = 2;  // Erstatt med dynamisk bruker-ID om nødvendig
+    const userID = parseInt(localStorage.getItem('userID'), 10); // Erstatt med dynamisk bruker-ID om nødvendig
     fetch(`http://localhost:3000/api/user/meal?userID=${userID}`)
         .then(response => response.json())
         .then(meals => {
