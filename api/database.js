@@ -1,6 +1,3 @@
-
-
-
 const sql = require('mssql');
 const dbConfig = {
     user: 'Niklas@nutritionserver',
@@ -12,6 +9,17 @@ const dbConfig = {
         enableArithAbort: true
     }
 };
+
+async function getDbConnection() {
+    try {
+        const pool = await sql.connect(dbConfig);
+        console.log("Connected to SQL database successfully.");
+        return pool; // This pool will be used to run queries
+    } catch (err) {
+        console.error('Failed to connect to the database:', err);
+        throw err; // Rethrow the error for caller to handle
+    }
+}
 
 async function getIngredients(searchString) {
     try {
@@ -234,7 +242,7 @@ async function deleteMeal(mealID) {
 
 
 
-module.exports = { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMealWeight,  deleteMeal, getUserInfo, changeUserInfo };
+module.exports = { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMealWeight,  deleteMeal, getUserInfo, changeUserInfo, getDbConnection };
 
 
 

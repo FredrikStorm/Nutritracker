@@ -23,25 +23,20 @@
     </header>
     <div class="container">
         <h1>Stofskifte beregner</h1>
-        <form id="stofskifteForm">
-            <div class="input-group">
-                <label for="age">Alder (år):</label>
-                <input type="number" id="age" name="age" required>
-            </div>
-            <div class="input-group">
-                <label for="weight">Vægt (kg):</label>
-                <input type="number" id="weight" name="weight" required>
-            </div>
-            <div class="input-group">
-                <label>Gender:</label>
-                <label for="male">Man</label>
-                <input type="radio" id="male" name="gender" value="male" required>
-                <label for="female">Kvinde</label>
-                <input type="radio" id="female" name="gender" value="female">
-            </div>
-            <button type="button" onclick="calculateStofskifte()">Beregn</button>
-        </form>
-        <div id="result"></div>
+        <div class="input-group">
+            <label for="age">Alder (år):</label>
+            <input type="number" id="age" disabled>
+        </div>
+        <div class="input-group">
+            <label for="weight">Vægt (kg):</label>
+            <input type="number" id="weight" disabled>
+        </div>
+        <div class="input-group">
+            <label for="gender">Køn:</label>
+            <input type="text" id="gender" disabled>
+        </div>
+        <button type="button" onclick="calculateMetabolism()">Beregn</button>
+        <p id="result"></p>
     </div>
 
 <!--Her er aktivitets tracker-->

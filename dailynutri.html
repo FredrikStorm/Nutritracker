@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Nutri</title>
    
-    <link rel="stylesheet" href="DailyNutri.css">
+    <link rel="stylesheet" href="dailynutri.css">
 </head>
 
 <body>
@@ -34,28 +34,24 @@
 
             <div id="content">
                 <table id="DNTable">
-                    <tr>
-
-                        <th>Time</th>
-                        <th>Meals</th>
-                        <th>Water (L)</th>
-                        <th>Kcal consumed</th>
-                    </tr>
-
+                    <thead>
+                        <tr>
+                            <th>Tid</th>
+                            <th>Indtag af energi</th>
+                            <th>Indtag af vand</th>
+                            <th>Forbrænding</th>
+                            <th>Kalorie under/overskud</th>
+                        </tr>
+                    </thead>
                     <tbody id="DNBody">
-
-
+                        <!-- Meal data will be added here dynamically -->
                     </tbody>
-
                 </table>
-
             </div>
-
-        </div>
 
 
     </main>
 </body>
-<script src="DailyNutri.js"></script>
+<script src="dailynutri.js"></script>
 
 </html>

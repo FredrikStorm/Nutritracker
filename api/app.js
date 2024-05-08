@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 const { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, deleteMeal, updateMealWeight, getUserInfo, changeUserInfo } = require('./database'); // Oppdatert for å inkludere de nye funksjonene
+const { createActivity, getActivity, getProfile, createMetabolism, seeEnergi } = require('./controllers/user.js')
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -36,8 +37,6 @@ app.use(session({
     cookie: { secure: false }
 }));
 
-
-
 // Databaseforbindelsesfunksjon
 async function connectToDatabase() {
     try {
@@ -51,6 +50,19 @@ async function connectToDatabase() {
 
 // Koble til databasen ved oppstart
 connectToDatabase();
+
+
+app.get('/api/user/Activitytable/:activityid', getActivity);
+
+app.post('/api/user/Activities', createActivity);
+
+//Stofskifte beregner
+app.get('/api/user/profile/:userId', getProfile);
+
+app.post('/api/user/metabolism', createMetabolism);
+
+//Dailynutri energi
+app.get('/api/user/meals/:userId', seeEnergi);
 
 
 // Post User 
@@ -328,6 +340,20 @@ app.delete('/api/user/meal/:mealID', async (req, res) => {
     }
 });
 
+// Use it before any route or middleware that needs to handle cross-origin requests
+app.use(cors());
+
+app.get('/api/user/Activitytable/:activityid', getActivity);
+
+app.post('/api/user/Activities', createActivity);
+
+//Stofskifte beregner
+app.get('/api/user/profile/:userId', getProfile);
+
+app.post('/api/user/metabolism', createMetabolism);
+
+//Dailynutri energi
+app.get('/api/user/meals/:userId', seeEnergi);
 
 
 
