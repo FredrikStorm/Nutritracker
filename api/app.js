@@ -2,8 +2,8 @@
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
-const { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, deleteMeal, updateMealWeight, getUserInfo, changeUserInfo } = require('./database'); // Oppdatert for å inkludere de nye funksjonene
 const { createActivity, getActivity, getProfile, createMetabolism, seeEnergi } = require('./controllers/user.js')
+const { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, deleteMeal, updateMealWeight, getUserInfo, changeUserInfo, logWater } = require('./database'); // Oppdatert for å inkludere de nye funksjonene
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -354,6 +354,19 @@ app.post('/api/user/metabolism', createMetabolism);
 
 //Dailynutri energi
 app.get('/api/user/meals/:userId', seeEnergi);
+
+//legge til vann 
+app.post('/api/user/water', async (req, res) => {
+    const { userID } = req.body;
+    try {
+        const result = await logWater(userID);
+        res.status(201).json({ message: "Water intake logged successfully", id: result.insertId });
+    } catch (error) {
+        console.error('Error logging water intake:', error);
+        res.status(500).send('Server error');
+    }
+});
+
 
 
 

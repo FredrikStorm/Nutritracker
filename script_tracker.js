@@ -6,8 +6,32 @@ document.addEventListener('DOMContentLoaded', () => {
     addButton.addEventListener('click', openRecipeSelector);
     const addIngredientButton = document.querySelector('.button');
     addIngredientButton.addEventListener('click', openIngredientPopup);
+    const waterButton = document.querySelector('.vann'); // Anta at knappen har denne klassen
+    waterButton.addEventListener('click', logWaterIntake);
     loadMeals();
 });
+
+//funksjon for å legge til vann 
+function logWaterIntake() {
+    const userID = parseInt(localStorage.getItem('userID'), 10);
+    fetch('http://localhost:3000/api/user/water', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userID })
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Failed to log water intake');
+        return response.json();
+    })
+    .then(data => {
+        console.log('Water intake logged:', data);
+    })
+    .catch(error => {
+        console.error('Error logging water intake:', error);
+        alert('Failed to log water intake: ' + error.message);
+    });
+}
+
 
 function openIngredientPopup() {
     const popup = document.createElement('div');
@@ -143,8 +167,6 @@ function closePopup() {
     const popup = document.querySelector('.popup');
     if (popup) document.body.removeChild(popup);
 }
-
-
 
 
 //-------------------------------------------------------------------------------------------------------------------------------------
