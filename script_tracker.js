@@ -1,12 +1,36 @@
 
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const addButton = document.querySelector('.knapp');
     addButton.addEventListener('click', openRecipeSelector);
     const addIngredientButton = document.querySelector('.button');
     addIngredientButton.addEventListener('click', openIngredientPopup);
+    const waterButton = document.querySelector('.vann'); // Anta at knappen har denne klassen
+    waterButton.addEventListener('click', logWaterIntake);
     loadMeals();
 });
 
+//funksjon for å legge til vann 
+function logWaterIntake() {
+    const userID = parseInt(localStorage.getItem('userID'), 10);
+    fetch('http://localhost:3000/api/user/water', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userID })
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Failed to log water intake');
+        return response.json();
+    })
+    .then(data => {
+        console.log('Water intake logged:', data);
+    })
+    .catch(error => {
+        console.error('Error logging water intake:', error);
+        alert('Failed to log water intake: ' + error.message);
+    });
+}
 
 
 function openIngredientPopup() {
@@ -14,6 +38,7 @@ function openIngredientPopup() {
     popup.className = 'popup';
     popup.innerHTML = `
         <div class="search-container">
+            <input type="text" id="recipeNameField" placeholder="Enter ingredient name for recipe">
             <input type="text" id="ingredientSearchField" placeholder="Search for ingredients">
             <button onclick="searchIngredient()">Search</button>
         </div>
@@ -45,20 +70,54 @@ function displayIngredients(ingredients) {
 function addIngredientAsMeal(ingredient) {
     const amount = prompt("Enter the amount in grams for " + ingredient.FoodName);
     if (!amount || isNaN(amount)) return;
-    
-    // Assume you have a function to calculate and save recipe
-    const name = ingredient.foodName; 
-    calculateAndSaveRecipe(ingredient, amount);
+
+    const recipeName = document.getElementById('recipeNameField').value.trim();
+    if (!recipeName) {
+        alert("Please enter a recipe name.");
+        return;
+    }
+
+    fetchNutritionInfo(ingredient.FoodID, amount)
+        .then(nutrients => createRecipe(recipeName, nutrients, amount))
+        .then(recipeID => {
+            // Sjekk om recipeID er gyldig før du fortsetter
+            if (!recipeID) {
+                throw new Error('Recipe ID was not retrieved successfully.');
+            }
+            const date = new Date().toISOString().split('T')[0];
+            const time = getCurrentFormattedTime();  // Sørger for at du får tidspunktet
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const latitude = position.coords.latitude.toFixed(6);
+                    const longitude = position.coords.longitude.toFixed(6);
+                    const location = `${latitude},${longitude}`;
+                    postMeal(date, time, location, amount, recipeID);
+                }, function(error) {
+                    console.error('Error getting location:', error.message);
+                    postMeal(date, time, "0.0,0.0", amount, recipeID);
+                });
+            } else {
+                console.error('Geolocation is not supported by this browser.');
+                postMeal(date, time, "0.0,0.0", amount, recipeID);
+            }
+        })
+        .catch(error => {
+            console.error('Error in processing ingredient:', error);
+            alert('Failed to process ingredient: ' + error.message);
+        });
 }
 
-function calculateAndSaveRecipe(ingredient, amount) {
-    fetchNutritionInfo(ingredient.FoodID, amount, foodName)
-        .then(nutrients => createRecipe(ingredient.FoodName, nutrients, amount))
-        .then(recipeID => registerMeal(recipeID, amount))
-        .catch(error => console.error('Error in processing ingredient:', error));
+function processIngredient(ingredient, amount, recipeName, date, time, location) {
+    fetchNutritionInfo(ingredient.FoodID, amount, recipeName)
+        .then(nutrients => createRecipe(recipeName, nutrients, amount))
+        .then(recipeID => {
+            postMeal(date, time, location, amount, recipeID);
+        })
+        .catch(error => console.error('Feil i behandling av ingrediens:', error));
 }
 
-function fetchNutritionInfo(foodID, amount, foodName) {
+
+function fetchNutritionInfo(foodID, amount, recipeName) {
     const nutrientIDs = {
         calories: 356,
         fiber: 168,
@@ -68,111 +127,41 @@ function fetchNutritionInfo(foodID, amount, foodName) {
 
     const urls = Object.keys(nutrientIDs).map(key => `http://localhost:3000/api/foodbank/foodParameter?foodID=${foodID}&parameterID=${nutrientIDs[key]}`);
 
-    Promise.all(urls.map(url => fetch(url).then(res => res.json())))
+    return Promise.all(urls.map(url => fetch(url).then(res => res.json())))
         .then(results => {
             const nutrients = {
-                calories: results[0].ResVal,
-                fiber: results[1].ResVal,
-                protein: results[2].ResVal,
-                fat: results[3].ResVal
+                calories: ((results[0].ResVal / 100) * amount)/(amount/100),
+                fiber: ((results[1].ResVal / 100) * amount)/(amount/100),
+                protein: ((results[2].ResVal / 100) * amount)/(amount/100),
+                fat: ((results[3].ResVal / 100) * amount)/(amount/100)
             };
-            const nutrientValues = {
-                calories: (nutrients.calories / 100) * amount,
-                fiber: (nutrients.fiber / 100) * amount,
-                protein: (nutrients.protein / 100) * amount,
-                fat: (nutrients.fat / 100) * amount
-            };
-            addToRecipeList(foodName, amount, nutrientValues);
-            addToRecipeSummary(); // Oppdater oppskriftssammendraget
-        })
-        .catch(error => console.error('Error fetching nutritional information:', error));
+            return nutrients;
+        });
 }
 
-function addRecipeToList() {
-    const recipeNameField = document.getElementById('recipeNameField');
-    if (!recipeNameField.value) {
-        alert('Please enter a recipe name.');
-        return;
-    }
-
-    const totalNutrients = {
-        protein: 0,
-        kcal: 0,
-        fat: 0,
-        fiber: 0
-    };
-
-    let totalWeight = 0;
-
-    // Beregn total verdi for hver næringsparameter og samlet vekt
-    recipe.forEach(item => {
-        totalWeight += parseFloat(item.amount);
-        totalNutrients.protein += item.nutrients.protein;
-        totalNutrients.kcal += item.nutrients.calories;
-        totalNutrients.fat += item.nutrients.fat;
-        totalNutrients.fiber += item.nutrients.fiber;
-    });
-
-    // Beregn næringsverdier per 100g hvis totalWeight er større enn 0 for å unngå divisjon med 0
-    const nutrientsPer100g = {
-        protein: totalWeight > 0 ? (totalNutrients.protein / totalWeight) * 100 : 0,
-        kcal: totalWeight > 0 ? (totalNutrients.kcal / totalWeight) * 100 : 0,
-        fat: totalWeight > 0 ? (totalNutrients.fat / totalWeight) * 100 : 0,
-        fiber: totalWeight > 0 ? (totalNutrients.fiber / totalWeight) * 100 : 0
-    };
-
-    const recipeName = name;
-    const userID = 2;  // Bruker en statisk verdi for nå
-
-    fetch('http://localhost:3000/api/user/recipe', {  
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            recipeName,
-            userID,
-            protein: nutrientsPer100g.protein,
-            kcal: nutrientsPer100g.kcal,
-            fat: nutrientsPer100g.fat,
-            fiber: nutrientsPer100g.fiber
-        })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(recipe => {
-        console.log('Recipe saved:', recipe);
-        document.body.removeChild(document.querySelector('.popup'));
-        loadRecipes();  // Oppdaterer hele listen etter å ha lagt til en ny oppskrift
-        resetRecipe();  // Nullstill oppskriften og sammendraget
-    })
-    .catch(error => {
-        console.error('Error saving recipe:', error);
-        alert('Failed to save recipe: ' + error.message);
-    });
-}
-
-
-function registerMeal(recipeID, amount) {
-    // Now that you have a recipeID, you can register it as a meal
-    fetch('http://localhost:3000/api/user/meal', {
+function createRecipe(foodName, nutrients, amount) {
+    const userID = parseInt(localStorage.getItem('userID'), 10);
+    return fetch('http://localhost:3000/api/user/recipe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            date: new Date().toISOString(),
-            recipeID,
-            userID: 2,
-            weight: amount
+            recipeName: foodName,
+            userID: userID,
+            protein: nutrients.protein.toFixed(2),
+            kcal: nutrients.calories.toFixed(2),
+            fat: nutrients.fat.toFixed(2),
+            fiber: nutrients.fiber.toFixed(2)
         })
-    }).then(res => res.json()).then(data => {
-        console.log('Meal registered:', data);
-        closePopup();
-    });
+    }).then(response => response.json())
+      .then(data => {
+          if (!data || !data.recipeID) {
+              throw new Error('Failed to save recipe or retrieve recipe ID');
+          }
+          return data.recipeID; // Returnerer recipeID sikker på at det er hentet riktig
+      });
 }
+
+
 
 function closePopup() {
     const popup = document.querySelector('.popup');
@@ -180,11 +169,11 @@ function closePopup() {
 }
 
 
-
 //-------------------------------------------------------------------------------------------------------------------------------------
 
 function openRecipeSelector() {
-    fetch(`http://localhost:3000/api/user/recipe?userID=2`)
+    const userID = parseInt(localStorage.getItem('userID'), 10);
+    fetch(`http://localhost:3000/api/user/recipe?userID=${userID}`)
         .then(response => {
             if (!response.ok) throw new Error('Failed to fetch');
             return response.json();
@@ -264,15 +253,16 @@ function confirmRegistration() {
             postMeal(date, time, location, weight, selectedRecipeId);
         }, function(error) {
             console.error('Error getting location:', error.message);
-            postMeal(date, time, "0.0,0.0", weight, selectedRecipeId); // Bruk en standardlokasjon ved feil
+            postMeal(date, time, location, weight, selectedRecipeId); // Bruk en standardlokasjon ved feil
         });
     } else {
         console.error('Geolocation is not supported by this browser.');
-        postMeal(date, time, "0.0,0.0", weight, selectedRecipeId); // Bruk en standardlokasjon hvis geolokasjon ikke støttes
+        postMeal(date, time, location, weight, selectedRecipeId); // Bruk en standardlokasjon hvis geolokasjon ikke støttes
     }
 }
 
 function postMeal(date, time, location, weight, recipeId) {
+    const userID = parseInt(localStorage.getItem('userID'), 10);
     fetch('http://localhost:3000/api/user/meal', {
         method: 'POST',
         headers: {
@@ -283,7 +273,7 @@ function postMeal(date, time, location, weight, recipeId) {
             time: time,
             location: location,
             weight: weight,
-            userID: 2, // Example user ID
+            userID: userID, // Example user ID
             recipeID: recipeId
         })
     })
@@ -293,6 +283,7 @@ function postMeal(date, time, location, weight, recipeId) {
     })
     .then(data => {
         console.log('Meal registered:', data);
+        mealID = data.mealID // lagrer mealID fra responsen
         document.body.removeChild(document.querySelector('.popup')); // Removes the popup
         return fetch(`http://localhost:3000/api/user/recipe/${recipeId}`); // Fetch the recipe details
     })
@@ -303,7 +294,8 @@ function postMeal(date, time, location, weight, recipeId) {
             protein: (recipe.protein / 100 * weight).toFixed(2),
             fat: (recipe.fat / 100 * weight).toFixed(2),
             fiber: (recipe.fiber / 100 * weight).toFixed(2)
-        }, `${date} ${time}`, location); // Adds to the meal list dynamically
+        }, `${date} ${time}`, location, mealID, recipeId ); // Adds to the meal list dynamically
+        console.log(recipeId); 
     })
     .catch(error => {
         console.error('Error registering meal:', error);
@@ -314,27 +306,26 @@ function postMeal(date, time, location, weight, recipeId) {
 
 
 
-
 function loadMeals() {
-    const userID = 2;  // Erstatt med dynamisk bruker-ID om nødvendig
+    const userID = parseInt(localStorage.getItem('userID'), 10); // Erstatt med dynamisk bruker-ID om nødvendig
     fetch(`http://localhost:3000/api/user/meal?userID=${userID}`)
         .then(response => response.json())
         .then(meals => {
             meals.forEach(meal => {
-                // Hent tilleggsinformasjon for hvert måltid
-                fetch(`http://localhost:3000/api/user/recipe/${meal.recipeID}`)
+                // Anta at meal inneholder alle nødvendige detaljer, inkludert mealID
+                const { recipeID, weight, mealID } = meal;
+                fetch(`http://localhost:3000/api/user/recipe/${recipeID}`)
                     .then(response => response.json())
                     .then(recipe => {
                         const formattedDate = meal.date.split('T')[0]; // YYYY-MM-DD
                         const formattedTime = meal.time.slice(0, -1); // Fjerner 'Z', viser HH:mm:ss
                         const location = meal.location; // Kan formatere videre om nødvendig
-
-                        addToMealList(recipe.recipeName, meal.weight, {
-                            kcal: (recipe.kcal / 100 * meal.weight).toFixed(2),
-                            protein: (recipe.protein / 100 * meal.weight).toFixed(2),
-                            fat: (recipe.fat / 100 * meal.weight).toFixed(2),
-                            fiber: (recipe.fiber / 100 * meal.weight).toFixed(2)
-                        }, `${formattedDate} ${formattedTime}`, location);
+                        addToMealList(recipe.recipeName, weight, {
+                            kcal: (recipe.kcal / 100 * weight).toFixed(2),
+                            protein: (recipe.protein / 100 * weight).toFixed(2),
+                            fat: (recipe.fat / 100 * weight).toFixed(2),
+                            fiber: (recipe.fiber / 100 * weight).toFixed(2)
+                        }, `${formattedDate} ${formattedTime}`, location, mealID, recipeID);
                     })
                     .catch(error => console.error('Failed to fetch recipe details:', error));
             });
@@ -342,10 +333,11 @@ function loadMeals() {
         .catch(error => console.error('Failed to load meals:', error));
 }
 
-
-function addToMealList(recipeName, weight, nutrition, dateTime, location) {
+function addToMealList(recipeName, weight, nutrition, dateTime, location, mealID, recipeID) {
     const tableBody = document.querySelector('.meal-tracker-table tbody');
     const row = document.createElement('tr');
+    row.setAttribute('data-meal-id', mealID);
+    row.setAttribute('data-recipe-id', recipeID);  // Lagre recipeID som en data-attributt
     row.innerHTML = `
         <td>${recipeName}</td>
         <td>${weight}g</td>
@@ -355,10 +347,78 @@ function addToMealList(recipeName, weight, nutrition, dateTime, location) {
         <td>${nutrition.fiber} g</td>
         <td>${dateTime}</td>
         <td>${location}</td>
-        <td><button onclick="editMeal(this)">Rediger</button></td>
+        <td>
+            <button onclick="editMeal(this)">Rediger</button>
+            <button onclick="deleteMeal(this)">Slett</button>
+        </td>
     `;
     tableBody.appendChild(row);
 }
 
+
+
+
+function editMeal(element) {
+    const row = element.closest('tr');
+    const mealID = row.getAttribute('data-meal-id');
+    const recipeID = row.getAttribute('data-recipe-id'); // Hent recipeID fra data-attributt
+    const weight = prompt("Enter the new weight in grams:");
+    if (weight && !isNaN(weight)) {
+        fetch(`http://localhost:3000/api/user/meal/${mealID}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ weight: parseFloat(weight) })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update meal');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Meal updated:', data);
+            return fetch(`http://localhost:3000/api/user/recipe/${recipeID}`);  // Hent oppdatert oppskriftsinformasjon
+        })
+        .then(response => response.json())
+        .then(recipe => {
+            // Oppdater vekten i tabellen
+            row.cells[1].textContent = `${weight}g`;
+            // Oppdater også næringsinformasjonen
+            row.cells[2].textContent = `${(recipe.kcal / 100 * weight).toFixed(2)} kcal`;
+            row.cells[3].textContent = `${(recipe.protein / 100 * weight).toFixed(2)} g`;
+            row.cells[4].textContent = `${(recipe.fat / 100 * weight).toFixed(2)} g`;
+            row.cells[5].textContent = `${(recipe.fiber / 100 * weight).toFixed(2)} g`;
+        })
+        .catch(error => {
+            console.error('Failed to update meal:', error);
+            alert('Failed to update meal: ' + error.message);
+        });
+    }
+}
+
+
+
+
+
+
+
+function deleteMeal(element) {
+    const row = element.closest('tr');
+    const mealID = row.getAttribute('data-meal-id');
+    console.log("Deleting meal with ID:", mealID);
+    fetch(`http://localhost:3000/api/user/meal/${mealID}`, {
+        method: 'DELETE',
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to delete meal');
+        }
+        console.log('Meal deleted successfully');
+        row.remove();
+    })
+    .catch(error => {
+        console.error('Error deleting meal:', error);
+    });
+}
 
 
