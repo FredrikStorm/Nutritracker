@@ -42,6 +42,7 @@ async function getNutritionalInfo(foodID, parameterID) {
 
 
 
+
 async function saveRecipe(recipeData) {
     let transaction = new sql.Transaction();
     try {
@@ -54,18 +55,22 @@ async function saveRecipe(recipeData) {
         request.input('fat', sql.Decimal(18, 2), recipeData.fat);
         request.input('fiber', sql.Decimal(18, 2), recipeData.fiber);
 
-        await request.query(`
+        // Endret for å inkludere OUTPUT for å få tilbake ID'en
+        const result = await request.query(`
             INSERT INTO [user].recipe (recipeName, userID, protein, kcal, fat, fiber)
+            OUTPUT INSERTED.recipeID  
             VALUES (@recipeName, @userID, @protein, @kcal, @fat, @fiber);
         `);
         await transaction.commit();
-        return { success: true, message: "Recipe saved successfully" };
+        return { success: true, recipeID: result.recordset[0].recipeID, message: "Recipe saved successfully" };
     } catch (err) {
         await transaction.rollback();
         console.error('Error saving recipe:', err);
         throw err;  // Forward the error to be handled by the caller
     }
 }
+
+
 
 
 // Henter alle oppskrifter for en gitt bruker
@@ -106,22 +111,27 @@ async function getRecipeNutrition(recipeId) {
 }
 
 
+
 async function saveMeal(date, time, location, weight, userID, recipeID) {
     try {
         await sql.connect(dbConfig);
         let request = new sql.Request();
-        request.input('date', sql.Date, date); // Forsikre deg om at dato er korrekt formatert
-        request.input('time', sql.VarChar(10), time); // Spesifiser skalaen for time-typen
+        request.input('date', sql.Date, date);
+        request.input('time', sql.VarChar(10), time);
         request.input('location', sql.VarChar, location);
         request.input('weight', sql.Int, weight);
         request.input('userID', sql.Int, userID);
         request.input('recipeID', sql.Int, recipeID);
 
+        // Bruk OUTPUT klause for å få den genererte mealID tilbake etter innsetting
         const result = await request.query(`
             INSERT INTO [user].meal (date, time, location, weight, userID, recipeID)
+            OUTPUT INSERTED.mealID
             VALUES (@date, @time, @location, @weight, @userID, @recipeID);
         `);
-        return { success: true, message: "Meal saved successfully" };
+        // Anta at en ID alltid genereres og returneres
+        const mealID = result.recordset[0].mealID;
+        return { success: true, message: "Meal saved successfully", mealID };
     } catch (err) {
         console.error('Database operation error:', err);
         throw err;  // Rethrow the error to handle it in the calling context
@@ -143,47 +153,48 @@ async function getMealsByUserId(userID) {
     }
 }
 
-//module.exports = { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, saveMeal };
 
 
 
 
-async function updateMeal(mealId, date, time, location, weight, kcal, protein, fat, fiber) {
-    await sql.connect(dbConfig);
-    let request = new sql.Request();
-    request.input('mealId', sql.Int, mealId);
-    request.input('date', sql.Date, new Date(date));
-    request.input('time', sql.VarChar(10), time);
-    request.input('location', sql.VarChar, location);
-    request.input('weight', sql.Int, weight);
-    request.input('kcal', sql.Decimal(18, 2), kcal);
-    request.input('protein', sql.Decimal(18, 2), protein);
-    request.input('fat', sql.Decimal(18, 2), fat);
-    request.input('fiber', sql.Decimal(18, 2), fiber);
 
-    const result = await request.query(`
-        UPDATE [user].meal SET
-        date = @date,
-        time = @time,
-        location = @location,
-        weight = @weight,
-        kcal = @kcal,
-        protein = @protein,
-        fat = @fat,
-        fiber = @fiber
-        WHERE mealId = @mealId;
-    `);
-    return result.recordset;
+async function updateMealWeight(mealID, weight) {
+    try {
+        let pool = await sql.connect(/* din database konfigurasjon */);
+        let result = await pool.request()
+            .input('mealID', sql.Int, mealID)
+            .input('weight', sql.Int, weight)
+            .query('UPDATE [user].meal SET weight = @weight WHERE mealID = @mealID');
+        return result.rowsAffected;
+    } catch (err) {
+        console.error('Error updating meal weight:', err);
+        throw err;
+    }
+}
+
+
+async function deleteMeal(mealID) {
+    let transaction = new sql.Transaction();
+    try {
+        await transaction.begin();
+        let request = new sql.Request(transaction);
+        request.input('mealID', sql.Int, mealID); // Pass på at du bruker riktig datatype
+
+        await request.query(`
+            DELETE FROM [user].meal WHERE mealID = @mealID;
+        `);
+        await transaction.commit();
+    } catch (err) {
+        await transaction.rollback();
+        console.error('Error deleting meal:', err);
+        throw err;
+    }
 }
 
 
 
 
-
-
-
-
-module.exports = { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMeal };
+module.exports = { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMealWeight, deleteMeal };
 
 
 
