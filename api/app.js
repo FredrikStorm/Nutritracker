@@ -59,6 +59,9 @@ app.post('/api/user/metabolism', createMetabolism);
 //Dailynutri energi
 app.get('/api/user/meals/:userId', seeEnergi);
 
+app.get('/api/user/profile/:userID', profile);
+
+
 // Post User 
 app.post('/api/user/profile/save_user/', async (req, res) => {
     let sqlRequest = new sql.Request();
@@ -117,24 +120,6 @@ app.get('/api/user/profile', async (req, res) => {
     }
 });
 
-/*
-// hente data til profilsiden:
-app.get('/api/user/profile/edit', async (req, res) => {
-    console.log('app');
-    let userID=req.query.userID;
-   
-    try {
-        const userInfo = await getUserInfo(userID);
-        console.log(userInfo)
-        res.json(userInfo);
-    } catch (error) {
-        console.error('Error fething userInfo:', error);
-        res.status(500).send('Error fetching recipe userInfo');
-    }
-});
-*/
-
-app.get('/api/user/profile/:userID', profile);
 
 // endre profil-data i databasen
 app.put('/api/user/profile/edit/save_changes',async(req,res)=> {

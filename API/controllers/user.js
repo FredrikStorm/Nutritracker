@@ -32,7 +32,7 @@ const createActivity = (cors(), async (req, res) => {
             .input('kcal', sql.Float, totalKcalBurned)
             .input('hours', sql.Float, hours)
             .input('userId', sql.Int, userId)
-            .query('INSERT INTO [user].Activities (activityId, activityName, kcal, hours, userId, tidspunkt) VALUES (@activityid, @activityname, @kcal, @hours, @userId, DEFAULT)');
+            .query('INSERT INTO [user].Activities (activityId, activityName, kcal, hours, userId, timestamp) VALUES (@activityid, @activityname, @kcal, @hours, @userId, DEFAULT)');
         
         res.status(201).send('Activity logged successfully');
     } catch (err) {

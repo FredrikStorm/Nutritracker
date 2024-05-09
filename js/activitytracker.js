@@ -76,7 +76,7 @@ function calculateMetabolism() {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            userId: userId, // Assuming userId is 2 as previously hardcoded
+            userId: userId,
             metabolism: metabolismKcal
         })
     })
