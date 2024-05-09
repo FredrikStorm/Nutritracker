@@ -107,6 +107,7 @@ async function getUserInfo(userID){
         FROM [user].profile
         WHERE userID = ${userID}  
     `);
+    console.log
     return result.recordset[0];
    
     }

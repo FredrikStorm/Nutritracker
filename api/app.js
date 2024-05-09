@@ -126,8 +126,9 @@ app.get('/api/user/profile', async (req, res) => {
 
 // hente data til profilsiden:
 app.get('/api/user/profile/edit', async (req, res) => {
-    const userID=req.query.userID;
-
+    console.log('app');
+    let userID=req.query.userID;
+   
     try {
         const userInfo = await getUserInfo(userID);
         console.log(userInfo)
@@ -155,7 +156,7 @@ app.put('/api/user/profile/edit/save_changes',async(req,res)=> {
 
 });
 
-// slette 
+// slette profil
 app.delete('/api/user/profile/delete',async(req,res)=>{
     let { userID } = req.body; 
     try{
