@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Rediger Profil</title>
@@ -14,22 +15,24 @@
         <h2>Profil</h2>
         <form>
             <div class="input-group">
-                <label for="age">Alder:</label>
-               <input type="number" id="ageBox">
+                <label for="ageBox">Alder:</label>
+                <input type="number" id="ageBox" name="age">
             </div>
             <div class="input-group">
-                <label for="gender">Køn:</label>
-                <input type="text"id="genderBox">
+                <label for="genderBox">Køn:</label>
+                <input type="text" id="genderBox" name="gender">
             </div>
             <div class="input-group">
-                <label for="weight">Vægt (kg):</label>
-                <input type="number" id="weightBox">
+                <label for="weightBox">Vægt (kg):</label>
+                <input type="number" id="weightBox" name="weight">
             </div>
+            
             <button id="update-button" type="button" onclick="saveChanges()">Save changes</button><br><br>
             <button id="logOut-button" type="button" onclick="logOut()">Sign out</button>
         </form>
         <button id="delete-button" type="button" onclick="deleteProfile()">Slet Profil</button>
     </div>
+    
     <script src="script_editProfile.js"></script>
 </body>
 

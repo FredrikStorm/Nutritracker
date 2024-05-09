@@ -4,31 +4,33 @@ console.log(userID);
 const getInfoApi = `http://localhost:3000/api/user/profile/edit?userID=${userID}`;
 const putInfoApi = `http://localhost:3000/api/user/profile/edit/save_changes`;
 const deleteUserApi = `http://localhost:3000/api/user/profile/delete?userID=${userID}`;
-document.addEventListener('DOMContentLoaded', function () {
- // Utføre GET-forespørsel med fetch
-    fetch(getInfoApi, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
+
+document.addEventListener('DOMContentLoaded', function() {
+    const userId = parseInt(localStorage.getItem('userID'), 10);
+    if (!userId) {
+        console.error("No user ID found in localStorage");
+        return;
+    }
+
+    fetch(`http://localhost:3000/api/user/profile/${userId}`)
         .then(response => {
             if (!response.ok) {
-                // Håndter feil respons
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error('Failed to fetch');
             }
             return response.json();
         })
         .then(data => {
             document.getElementById('ageBox').value = data.age;
-            document.getElementById('genderBox').value = data.gender;
             document.getElementById('weightBox').value = data.weight;
+            document.getElementById('genderBox').value = data.gender;
         })
         .catch(error => {
-            // Logg eventuelle feil som oppstår under forespørsel eller datahåndtering
-            console.error('Error fetching user info:', error);
+            console.error('Error fetching user profile:', error);
+            document.getElementById('result').textContent = "Error fetching data.";
         });
 });
+
+
 
 async function saveChanges() {
     let age = document.getElementById('ageBox').value;

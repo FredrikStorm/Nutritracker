@@ -3,11 +3,10 @@ const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 
-const { createActivity, getActivity, getProfile, createMetabolism, seeEnergi } = require('./controllers/user.js')
-const { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, deleteMeal, updateMealWeight, getUserInfo, changeUserInfo,deleteUser, logWater } = require('./database'); // Oppdatert for å inkludere de nye funksjonene
+const { createActivity, getActivity, getProfile, createMetabolism, seeEnergi, profile } = require('./controllers/user.js')
+const { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, deleteMeal, updateMealWeight, /*getUserInfo*/ changeUserInfo,deleteUser, logWater } = require('./database'); // Oppdatert for å inkludere de nye funksjonene
 const app = express();
 const port = process.env.PORT || 3000;
-
 
 const corsOptions = {
     origin: '*',
@@ -24,11 +23,6 @@ const dbConfig = require('./dbconfig');
 app.use(express.json());
 // For å parse URL-encoded bodies
 app.use(express.urlencoded({ extended: true }));
-
-
-
-//nytt fra niklas: 
-
 
 //session gjør så brukeren kan forbli innlogget
 app.use(session({
@@ -52,7 +46,7 @@ async function connectToDatabase() {
 // Koble til databasen ved oppstart
 connectToDatabase();
 
-
+//activity beregner
 app.get('/api/user/Activitytable/:activityid', getActivity);
 
 app.post('/api/user/Activities', createActivity);
@@ -64,7 +58,6 @@ app.post('/api/user/metabolism', createMetabolism);
 
 //Dailynutri energi
 app.get('/api/user/meals/:userId', seeEnergi);
-
 
 // Post User 
 app.post('/api/user/profile/save_user/', async (req, res) => {
@@ -124,6 +117,7 @@ app.get('/api/user/profile', async (req, res) => {
     }
 });
 
+/*
 // hente data til profilsiden:
 app.get('/api/user/profile/edit', async (req, res) => {
     console.log('app');
@@ -138,6 +132,9 @@ app.get('/api/user/profile/edit', async (req, res) => {
         res.status(500).send('Error fetching recipe userInfo');
     }
 });
+*/
+
+app.get('/api/user/profile/:userID', profile);
 
 // endre profil-data i databasen
 app.put('/api/user/profile/edit/save_changes',async(req,res)=> {
@@ -310,10 +307,6 @@ app.get('/api/user/meal', async (req, res) => {
 });
 
 
-
-
-
-
 //redeigere måltider 
 // Eksempel på et Express.js rutehåndterer
 app.put('/api/user/meal/:mealID', async (req, res) => {
@@ -355,21 +348,6 @@ app.delete('/api/user/meal/:mealID', async (req, res) => {
         res.status(500).send('Failed to delete meal');
     }
 });
-
-// Use it before any route or middleware that needs to handle cross-origin requests
-app.use(cors());
-
-app.get('/api/user/Activitytable/:activityid', getActivity);
-
-app.post('/api/user/Activities', createActivity);
-
-//Stofskifte beregner
-app.get('/api/user/profile/:userId', getProfile);
-
-app.post('/api/user/metabolism', createMetabolism);
-
-//Dailynutri energi
-app.get('/api/user/meals/:userId', seeEnergi);
 
 //legge til vann 
 app.post('/api/user/water', async (req, res) => {

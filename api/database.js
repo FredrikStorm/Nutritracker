@@ -98,23 +98,22 @@ async function getRecipes(userID) {
 }
 
 //Kode for user information---------------------------------------------------------------------
-
-async function getUserInfo(userID){
-    try{
+/*
+async function getUserInfo(userID) {
+    try {
         await sql.connect(dbConfig);
         const result = await sql.query(`
-        SELECT age, gender, weight
-        FROM [user].profile
-        WHERE userID = ${userID}  
-    `);
-    console.log
-    return result.recordset[0];
-   
-    }
-    catch(err){
-        console.error('Error fetching user info:',err)
+            SELECT firstname, lastname, age, gender, weight
+            FROM [user].profile
+            WHERE userID = ${userID}
+        `);
+        return result.recordset[0];
+    } catch (err) {
+        console.error('Error fetching user info:', err);
+        throw err; // Rethrow the error so the catch block in the API can handle it
     }
 }
+*/
 
 async function changeUserInfo(userID, age, gender, weight) {
     let sqlRequest = new sql.Request(); 
@@ -262,7 +261,7 @@ async function logWater(userID) {
     }
 }
 
-module.exports = { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMealWeight,  deleteMeal, getUserInfo, changeUserInfo, logWater, getDbConnection,deleteUser };
+module.exports = { getIngredients, getNutritionalInfo, saveRecipe, getRecipes, getRecipeNutrition, saveMeal, getMealsByUserId, updateMealWeight,  deleteMeal, /*etUserInfo*/ changeUserInfo, logWater, getDbConnection,deleteUser };
 
 
 

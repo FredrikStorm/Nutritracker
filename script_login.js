@@ -26,7 +26,7 @@ async function login() {
                 const callsign='userID'
                 const userID =data.userID
                 localStorage.setItem(callsign, JSON.stringify(userID))
-                window.location.replace('profil.html');
+                window.location.replace('frontPage.html');
                 
             }
             else{

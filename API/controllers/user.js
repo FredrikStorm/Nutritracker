@@ -165,5 +165,23 @@ const seeEnergi = async (req, res) => {
     }
 };
 
+const profile = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const pool = await getDbConnection();
+        const result = await pool.request()
+            .input('userId', sql.Int, userId)
+            .query('SELECT age, weight, gender FROM [user].profile WHERE userId = @userId');
 
-module.exports = { getActivity, createActivity, getProfile, createMetabolism, seeEnergi }
+        if (result.recordset.length > 0) {
+            res.json(result.recordset[0]);
+        } else {
+            res.status(404).send('User profile not found');
+        }
+    } catch (err) {
+        console.error('Database error:', err);
+        res.status(500).send('Database error: ' + err.message);
+    }
+}
+
+module.exports = { getActivity, createActivity, getProfile, createMetabolism, seeEnergi, profile }
