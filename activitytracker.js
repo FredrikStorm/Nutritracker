@@ -1,6 +1,6 @@
 //Stofskifte beregner
 document.addEventListener('DOMContentLoaded', function() {
-    const userId = 2; // Hardcoding userId as 2
+    const userId = parseInt(localStorage.getItem('userID'),10);  
     fetch(`http://localhost:3000/api/user/profile/${userId}`)
         .then(response => {
             if (!response.ok) {
@@ -23,6 +23,7 @@ function calculateMetabolism() {
     const age = parseInt(document.getElementById('age').value);
     const weight = parseFloat(document.getElementById('weight').value);
     const gender = document.getElementById('gender').value.trim().toLowerCase();
+    const userId = parseInt(localStorage.getItem('userID'),10);
 
     let metabolismRate;
 
@@ -75,7 +76,7 @@ function calculateMetabolism() {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            userId: 2, // Assuming userId is 2 as previously hardcoded
+            userId: userId, // Assuming userId is 2 as previously hardcoded
             metabolism: metabolismKcal
         })
     })
@@ -101,6 +102,7 @@ document.getElementById('activityForm').addEventListener('submit', async functio
 
     const activityid = document.getElementById('everydayActivities').value;
     const hours = parseFloat(document.getElementById('hoursEveryday').value);
+    const userId = parseInt(localStorage.getItem('userID'), 10); // Fetch userId from localStorage
 
     if (isNaN(hours) || hours <= 0) {
         alert("Please enter a valid number of hours.");
@@ -119,17 +121,18 @@ document.getElementById('activityForm').addEventListener('submit', async functio
             const totalKcalBurned = kcalPerHour * hours;
             document.getElementById('result2').textContent = `Total Calories Burned: ${totalKcalBurned.toFixed(2)}`;
 
-            // Now, send the result to the server to save it
+            // Now, send the result along with userId to the server to save it
             const postResponse = await fetch('http://localhost:3000/api/user/Activities', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    activityid: activityid,
+                    activityid,
                     activityname: data.activityname,
-                    totalKcalBurned: totalKcalBurned,
-                    hours: hours
+                    totalKcalBurned,
+                    hours,
+                    userId  // Include userId in the POST data
                 })
             });
 
