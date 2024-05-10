@@ -107,14 +107,6 @@ function addIngredientAsMeal(ingredient) {
         });
 }
 
-function processIngredient(ingredient, amount, recipeName, date, time, location) {
-    fetchNutritionInfo(ingredient.FoodID, amount, recipeName)    // henter næringsinformasjon basert på ingrediensID og megnde
-        .then(nutrients => createRecipe(recipeName, nutrients, amount))   // deretter opprette en ny oppskrift, med bare den ene ingrediensen 
-        .then(recipeID => {
-            postMeal(date, time, location, amount, recipeID);  //når oppskriften er laget og vi har fått en recipeID kan vi poste "måltidet"
-        })
-        .catch(error => console.error('Feil i behandling av ingrediens:', error));
-}
 
 
 function fetchNutritionInfo(foodID, amount, recipeName) {  // henter næringsinformasjon for en ingrediens 
