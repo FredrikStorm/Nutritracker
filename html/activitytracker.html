@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Metabolism Calculator</title>
     <link rel="stylesheet" href="../css/activitytracker.css">
 </head>
+
 <body>
     <header>
         <div class="logo">
@@ -14,89 +16,99 @@
             </a>
         </div>
         <div class="knapper">
-            <a href="DailyNutri.html"><h3>Daily Nutri</h3></a>
-            <a href="meal_creator.html"><h3>Meal Creator</h3></a>
-            <a href="meal_tracker.html"><h3>Meal Tracker</h3></a>
-            <a href="activitytracker.html"><h3>Activity Tracker</h3></a>
-            <a href="profil.html"><h3>Profil</h3></a>
+            <a href="DailyNutri.html">
+                <h3>Daily Nutri</h3>
+            </a>
+            <a href="meal_creator.html">
+                <h3>Meal Creator</h3>
+            </a>
+            <a href="meal_tracker.html">
+                <h3>Meal Tracker</h3>
+            </a>
+            <a href="activitytracker.html">
+                <h3>Activity Tracker</h3>
+            </a>
+            <a href="profil.html">
+                <h3>Profil</h3>
+            </a>
         </div>
     </header>
     <div class="container">
-        <h1>Stofskifte beregner</h1>
+        <h1>Metabolism calculator</h1>
         <div class="input-group">
-            <label for="age">Alder (år):</label>
+            <label for="age">Age:</label>
             <input type="number" id="age" disabled>
         </div>
         <div class="input-group">
-            <label for="weight">Vægt (kg):</label>
+            <label for="weight">Weight (kg):</label>
             <input type="number" id="weight" disabled>
         </div>
         <div class="input-group">
-            <label for="gender">Køn:</label>
+            <label for="gender">Gender:</label>
             <input type="text" id="gender" disabled>
         </div>
-        <button type="button" onclick="calculateMetabolism()">Beregn</button>
+        <button type="button" onclick="calculateMetabolism()">Calculate</button>
         <p id="result"></p>
     </div>
 
-<!--Her er aktivitets tracker-->
-<div class="container">
-    <h1>Aktivitetsregistrering</h1>
-    <form id="activityForm">
-        <div class="form-group">
-            <label for="everydayActivities">Aktiviteter:</label>
-            <div class="input-group">
-                <select id="everydayActivities">
-                    <option value="1">Almindelig gang</option>
-                    <option value="2">Gang ned af trapper</option>
-                    <option value="3">Gang op af trapper</option>
-                    <option value="4">Slå græs med manuel græsslåmaskine</option>
-                    <option value="5">Lave mad og redde seng</option>
-                    <option value="6">Luge ukrudt</option>
-                    <option value="7">Rydde sne</option>
-                    <option value="8">Læse eller se tv</option>
-                    <option value="9">Stå oprejst</option>
-                    <option value="10">Cykling i roligt tempo</option>
-                    <option value="11">Tørre støv af</option>
-                    <option value="12">Vaske gulv</option>
-                    <option value="13">Pudse vinduer</option>
-                    <option value="14">Cardio</option>
-                    <option value="15">Hård styrketræning</option>
-                    <option value="16">Badminton</option>
-                    <option value="17">Volleyball</option>
-                    <option value="18">Bordtennis</option>
-                    <option value="19">Dans i højt tempo</option>
-                    <option value="20">Dans i moderat tempo</option>
-                    <option value="21">Fodbold</option>
-                    <option value="22">Rask gang</option>
-                    <option value="23">Golf</option>
-                    <option value="24">Håndbold</option>
-                    <option value="25">Squash</option>
-                    <option value="26">Jogging</option>
-                    <option value="27">Langrend</option>
-                    <option value="28">Løb i moderat tempo</option>
-                    <option value="29">Løb i højt tempo</option>
-                    <option value="30">Ridning</option>
-                    <option value="31">Skøjteløb</option>
-                    <option value="32">Svømning</option>
-                    <option value="33">Cykling i højt tempo</option>
-                    <option value="34">Bilreperation</option>
-                    <option value="35">Gravearbejde</option>
-                    <option value="36">Landbrugsarbejde</option>
-                    <option value="37">Let kontorarbejde</option>
-                    <option value="38">Male hus</option>
-                    <option value="39">Murerarbejde</option>
-                    <option value="40">Hugge og slæbe på brænde</option>
-
-                </select>
-                <input type="number" id="hoursEveryday" placeholder="Timer" min="0" step="0.5">
+    <!--Her er aktivitets tracker-->
+    <div class="container">
+        <h1>Activity registration</h1>
+        <form id="activityForm">
+            <div class="form-group">
+                <label for="everydayActivities">Activities:</label>
+                <div class="input-group">
+                    <select id="everydayActivities">
+                        <option value="1">Regular walking</option>
+                        <option value="2">Walking downstairs</option>
+                        <option value="3">Walking upstairs</option>
+                        <option value="4">Mowing the lawn with a manual mower</option>
+                        <option value="5">Cooking and making the bed</option>
+                        <option value="6">Weeding</option>
+                        <option value="7">Clearing snow</option>
+                        <option value="8">Reading or watching TV</option>
+                        <option value="9">Standing upright</option>
+                        <option value="10">Cycling at a leisurely pace</option>
+                        <option value="11">Dusting</option>
+                        <option value="12">Floor washing</option>
+                        <option value="13">Window cleaning</option>
+                        <option value="14">Cardio</option>
+                        <option value="15">Intense strength training</option>
+                        <option value="16">Badminton</option>
+                        <option value="17">Volleyball</option>
+                        <option value="18">Table tennis</option>
+                        <option value="19">High-tempo dancing</option>
+                        <option value="20">Moderate-tempo dancing</option>
+                        <option value="21">Soccer</option>
+                        <option value="22">Brisk walking</option>
+                        <option value="23">Golf</option>
+                        <option value="24">Handball</option>
+                        <option value="25">Squash</option>
+                        <option value="26">Jogging</option>
+                        <option value="27">Cross-country skiing</option>
+                        <option value="28">Moderate-pace running</option>
+                        <option value="29">High-pace running</option>
+                        <option value="30">Horse riding</option>
+                        <option value="31">Ice skating</option>
+                        <option value="32">Swimming</option>
+                        <option value="33">High-tempo cycling</option>
+                        <option value="34">Car repair</option>
+                        <option value="35">Digging</option>
+                        <option value="36">Agricultural work</option>
+                        <option value="37">Light office work</option>
+                        <option value="38">House painting</option>
+                        <option value="39">Masonry work</option>
+                        <option value="40">Chopping and hauling wood</option>
+                    </select>
+                    <input type="number" id="hoursEveryday" placeholder="Timer" min="0" step="0.5">
+                </div>
             </div>
-        </div>
-        <button type="submit">Registrer Aktivitet</button>
-    </form>
-    <div id="result2"></div>
-</div>
-<script src="../js/activitytracker.js"></script>
+            <button type="submit">Register activity</button>
+        </form>
+        <div id="result2"></div>
+    </div>
+    <script src="../js/activitytracker.js"></script>
 
 </body>
+
 </html>

@@ -18,8 +18,8 @@ function openIngredientPopup() { // lager et popup vindu får lage oppskriften
             <button id="finishMealButton" onclick="addRecipeToList()">Finish Meal</button>
         </div>
         <div class="list-container">
-            <div class="søkeliste"><p>søkeliste:</p></div>
-            <div class="recipe-list"><p>Oppskrift:</p></div>
+            <div class="søkeliste"><p>Search list:</p></div>
+            <div class="recipe-list"><p>Recipe:</p></div>
         </div>
         <div class="summary-container"></div> <!-- Legg til en beholder for oppskriftssammendraget -->
     `;
@@ -45,7 +45,7 @@ function searchIngredient() { // funksjon for å søke opp ingredienser
 
 function updateFoodList(data) {  // oppdaterer listen av ingredienser som vises i popupvinduet
     const container = document.querySelector('.søkeliste');
-    container.innerHTML = '<p>søkeliste:</p>'; // nullstiller innholdet i søkelisten 
+    container.innerHTML = '<p>Search list:</p>'; // nullstiller innholdet i søkelisten 
     const list = document.createElement('ul');
     data.forEach(item => {   // For hver ingrediens i dataene som kommer tilbake, legger vi til et listeelement i ul-listen.
         const listItem = document.createElement('li');

@@ -146,6 +146,7 @@ main {
     gap: 10px; /* Legger til litt mellomrom mellom elementene */
 }
 
+
 .popup .list-container {
     display: flex;
     justify-content: space-between;

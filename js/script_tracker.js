@@ -193,7 +193,7 @@ function createRecipePopup(recipes) {  // popup vindu hvor amn kan velge recipe 
     const select = document.createElement('select');
     select.id = 'recipeSelect';
     const defaultOption = document.createElement('option');
-    defaultOption.textContent = 'Velg måltid';
+    defaultOption.textContent = 'Choose recipe';
     defaultOption.disabled = true;
     defaultOption.selected = true;
     select.appendChild(defaultOption);
@@ -206,7 +206,7 @@ function createRecipePopup(recipes) {  // popup vindu hvor amn kan velge recipe 
     });
 
     const weightInput = document.createElement('input');
-    weightInput.placeholder = 'Vekt i gram';
+    weightInput.placeholder = 'Weight in grams';
     weightInput.type = 'number';
     weightInput.id = 'weightInput';
 
@@ -214,11 +214,11 @@ function createRecipePopup(recipes) {  // popup vindu hvor amn kan velge recipe 
     formContainer.appendChild(weightInput);
 
     const closeButton = document.createElement('button');
-    closeButton.textContent = 'Lukk';
+    closeButton.textContent = 'Close';
     closeButton.onclick = () => document.body.removeChild(popup); // fjerner popup når knapp blir trykket 
 
     const confirmButton = document.createElement('button');
-    confirmButton.textContent = 'Bekreft';
+    confirmButton.textContent = 'Confirm';
     confirmButton.onclick = confirmRegistration;  // kall på funksjonen som håndterer registrering av måltid 
 
     popup.appendChild(formContainer);
@@ -350,8 +350,8 @@ function addToMealList(recipeName, weight, nutrition, dateTime, location, mealID
         <td>${dateTime}</td>
         <td>${location}</td>
         <td>
-            <button onclick="editMeal(this)">Rediger</button>
-            <button onclick="deleteMeal(this)">Slett</button>
+            <button onclick="editMeal(this)">Edit</button>
+            <button onclick="deleteMeal(this)">Delete</button>
         </td>
     `;
     tableBody.appendChild(row);

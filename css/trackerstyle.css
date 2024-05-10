@@ -87,7 +87,6 @@ header {
     cursor: pointer; /* Endrer musepeker til peker */
 }
 
-
 .popup {
     position: fixed;
     top: 50%;
@@ -104,18 +103,34 @@ header {
     align-items: center;
 }
 
-.form-container {
-    display: flex;
-    justify-content: space-between;
-    width: 100%; /* Full bredde til container */
-    margin-bottom: 20px;
-}
-
 .popup select,
 .popup input,
 .popup button {
     margin: 0 10px; /* Gir litt avstand mellom elementene */
     flex-grow: 1; /* La hvert element vokse for å fylle containeren */
+    cursor: pointer;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #91c789;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+}
+
+.popup select:hover, .popup input:hover, .popup button:hover {
+    background-color: #569BD5;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+}
+
+
+
+.form-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; /* Full bredde til container */
+    margin-bottom: 20px;
 }
 
 
@@ -137,5 +152,22 @@ header {
 
 
 .knapp:hover {
-    background-color: #0056b3;
+    background-color: #569BD5;
+}
+
+.button, .vann {
+    cursor: pointer;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #91c789;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+}
+
+.button:hover, .vann:hover {
+    background-color: #569BD5;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
 }
