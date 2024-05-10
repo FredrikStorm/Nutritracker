@@ -1,0 +1,162 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito', sans-serif;
+}
+
+header {
+    height: 150px;
+    display: flex;
+    position: relative;
+    align-items: center;
+    background-color: #DEF6D8;
+}
+
+.logo {
+    padding: 30px 30px 30px 50px;
+}
+
+.logo img {
+    height: 75px;
+    width: 210px;
+}
+
+.knapper {
+    display: flex;
+    gap: 80px;
+}
+
+.knapper a {
+    text-decoration: none;
+    color: #757575;
+    padding-left: 50px;
+}
+
+#dash-container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    width: 100%; /* Sørger for at containeren tar full bredde */
+    padding: 0 20px; /* Legger til litt padding på sidene for å unngå at innholdet kleber til kanten */
+}
+
+#dash {
+    margin-right: 10px;
+}
+
+.creator {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 80em;
+    border-radius: 10px;
+    min-height: 200px;
+    text-align: center;
+    border: 1px solid #99d9de;
+    padding: 20px; /* Tilføyd padding */
+    margin: 30px auto; /* Sentrert og lagt til margin på toppen */
+    background-color: #ffffff; /* Hvit bakgrunn */
+}
+
+.knapp {
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    background-color: #91c789;
+    font-size: 20px;
+    color: white;
+    border: none; /* Fjerner border */
+    cursor: pointer; /* Endrer musepeker til peker */
+}
+
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 30px;
+}
+
+/* Stil for listen */
+.liste {
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* Stil for tabellen */
+.liste table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Sørger for at kolonnene har lik bredde */
+}
+
+/* Stil for tabellhoder */
+.liste th {
+    background-color: #DEF6D8;
+    color: #333;
+    text-align: left;
+    padding: 8px;
+}
+
+/* Stil for tabellceller */
+.liste td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Stil for hover-effekt på rader */
+.liste tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Stil for knapper i tabell */
+.liste button {
+    background-color: #91c789; /* Grønn bakgrunn */
+    color: white; /* Hvit tekst */
+    border: none; /* Fjerner border */
+    padding: 5px 10px; 
+    margin-right: 4px; /* Legger til margin mellom knappene */
+    border-radius: 4px; /* Runde hjørner */
+    cursor: pointer; /* Endrer musepeker til peker */
+}
+
+.popup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border: 1px solid #99d9de;
+    border-radius: 10px;
+    background-color: #ffffff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 600px; 
+    z-index: 10; /* for å sikre at den vises over andre elementer */
+}
+
+.popup .search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Legger til litt mellomrom mellom elementene */
+}
+
+
+.popup .list-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 20px; /* Mellomrom mellom listene */
+}
+
+.popup .søkeliste, .popup .ingredienser {
+    flex: 1; /* Fordeler plassen jevnt mellom listene */
+    padding: 10px;
+    height: 200px; 
+    overflow-y: auto; 
+} 
